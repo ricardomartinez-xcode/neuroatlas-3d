@@ -27,5 +27,5 @@ test('Los casos académicos no se confunden con pacientes reales',()=>{
  const source=readFileSync('src/ClinicalCases.jsx','utf8');
  assert.match(source,/fictici/i);
  for(const name of ['memoria','atencion','lenguaje','ejecutivas'])assert.ok(source.includes("id:'"+name+"'"));
- assert.match(source,/hipot/i);
+ assert.match(source,/hip[oó]t/i);
 });
