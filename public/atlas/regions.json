@@ -1,0 +1,389 @@
+{
+  "name": "Destrieux 2009 surface atlas",
+  "source": "https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_surf_destrieux.html",
+  "template": "FreeSurfer fsaverage5",
+  "vertexCountPerHemisphere": 10242,
+  "faceCountPerHemisphere": 20480,
+  "regions": [
+    {
+      "id": 0,
+      "name": "Unknown",
+      "lobe": "other"
+    },
+    {
+      "id": 1,
+      "name": "G_and_S_frontomargin",
+      "lobe": "frontal"
+    },
+    {
+      "id": 2,
+      "name": "G_and_S_occipital_inf",
+      "lobe": "occipital"
+    },
+    {
+      "id": 3,
+      "name": "G_and_S_paracentral",
+      "lobe": "frontoparietal"
+    },
+    {
+      "id": 4,
+      "name": "G_and_S_subcentral",
+      "lobe": "frontoparietal"
+    },
+    {
+      "id": 5,
+      "name": "G_and_S_transv_frontopol",
+      "lobe": "frontal"
+    },
+    {
+      "id": 6,
+      "name": "G_and_S_cingul-Ant",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 7,
+      "name": "G_and_S_cingul-Mid-Ant",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 8,
+      "name": "G_and_S_cingul-Mid-Post",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 9,
+      "name": "G_cingul-Post-dorsal",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 10,
+      "name": "G_cingul-Post-ventral",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 11,
+      "name": "G_cuneus",
+      "lobe": "occipital"
+    },
+    {
+      "id": 12,
+      "name": "G_front_inf-Opercular",
+      "lobe": "frontal"
+    },
+    {
+      "id": 13,
+      "name": "G_front_inf-Orbital",
+      "lobe": "frontal"
+    },
+    {
+      "id": 14,
+      "name": "G_front_inf-Triangul",
+      "lobe": "frontal"
+    },
+    {
+      "id": 15,
+      "name": "G_front_middle",
+      "lobe": "frontal"
+    },
+    {
+      "id": 16,
+      "name": "G_front_sup",
+      "lobe": "frontal"
+    },
+    {
+      "id": 17,
+      "name": "G_Ins_lg_and_S_cent_ins",
+      "lobe": "insula"
+    },
+    {
+      "id": 18,
+      "name": "G_insular_short",
+      "lobe": "insula"
+    },
+    {
+      "id": 19,
+      "name": "G_occipital_middle",
+      "lobe": "occipital"
+    },
+    {
+      "id": 20,
+      "name": "G_occipital_sup",
+      "lobe": "occipital"
+    },
+    {
+      "id": 21,
+      "name": "G_oc-temp_lat-fusifor",
+      "lobe": "temporal"
+    },
+    {
+      "id": 22,
+      "name": "G_oc-temp_med-Lingual",
+      "lobe": "occipital"
+    },
+    {
+      "id": 23,
+      "name": "G_oc-temp_med-Parahip",
+      "lobe": "temporal"
+    },
+    {
+      "id": 24,
+      "name": "G_orbital",
+      "lobe": "frontal"
+    },
+    {
+      "id": 25,
+      "name": "G_pariet_inf-Angular",
+      "lobe": "parietal"
+    },
+    {
+      "id": 26,
+      "name": "G_pariet_inf-Supramar",
+      "lobe": "parietal"
+    },
+    {
+      "id": 27,
+      "name": "G_parietal_sup",
+      "lobe": "parietal"
+    },
+    {
+      "id": 28,
+      "name": "G_postcentral",
+      "lobe": "parietal"
+    },
+    {
+      "id": 29,
+      "name": "G_precentral",
+      "lobe": "frontal"
+    },
+    {
+      "id": 30,
+      "name": "G_precuneus",
+      "lobe": "parietal"
+    },
+    {
+      "id": 31,
+      "name": "G_rectus",
+      "lobe": "frontal"
+    },
+    {
+      "id": 32,
+      "name": "G_subcallosal",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 33,
+      "name": "G_temp_sup-G_T_transv",
+      "lobe": "temporal"
+    },
+    {
+      "id": 34,
+      "name": "G_temp_sup-Lateral",
+      "lobe": "temporal"
+    },
+    {
+      "id": 35,
+      "name": "G_temp_sup-Plan_polar",
+      "lobe": "temporal"
+    },
+    {
+      "id": 36,
+      "name": "G_temp_sup-Plan_tempo",
+      "lobe": "temporal"
+    },
+    {
+      "id": 37,
+      "name": "G_temporal_inf",
+      "lobe": "temporal"
+    },
+    {
+      "id": 38,
+      "name": "G_temporal_middle",
+      "lobe": "temporal"
+    },
+    {
+      "id": 39,
+      "name": "Lat_Fis-ant-Horizont",
+      "lobe": "sylvian"
+    },
+    {
+      "id": 40,
+      "name": "Lat_Fis-ant-Vertical",
+      "lobe": "sylvian"
+    },
+    {
+      "id": 41,
+      "name": "Lat_Fis-post",
+      "lobe": "sylvian"
+    },
+    {
+      "id": 42,
+      "name": "Medial_wall",
+      "lobe": "other"
+    },
+    {
+      "id": 43,
+      "name": "Pole_occipital",
+      "lobe": "occipital"
+    },
+    {
+      "id": 44,
+      "name": "Pole_temporal",
+      "lobe": "temporal"
+    },
+    {
+      "id": 45,
+      "name": "S_calcarine",
+      "lobe": "occipital"
+    },
+    {
+      "id": 46,
+      "name": "S_central",
+      "lobe": "frontoparietal"
+    },
+    {
+      "id": 47,
+      "name": "S_cingul-Marginalis",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 48,
+      "name": "S_circular_insula_ant",
+      "lobe": "insula"
+    },
+    {
+      "id": 49,
+      "name": "S_circular_insula_inf",
+      "lobe": "insula"
+    },
+    {
+      "id": 50,
+      "name": "S_circular_insula_sup",
+      "lobe": "insula"
+    },
+    {
+      "id": 51,
+      "name": "S_collat_transv_ant",
+      "lobe": "temporal"
+    },
+    {
+      "id": 52,
+      "name": "S_collat_transv_post",
+      "lobe": "temporal"
+    },
+    {
+      "id": 53,
+      "name": "S_front_inf",
+      "lobe": "frontal"
+    },
+    {
+      "id": 54,
+      "name": "S_front_middle",
+      "lobe": "frontal"
+    },
+    {
+      "id": 55,
+      "name": "S_front_sup",
+      "lobe": "frontal"
+    },
+    {
+      "id": 56,
+      "name": "S_interm_prim-Jensen",
+      "lobe": "parietal"
+    },
+    {
+      "id": 57,
+      "name": "S_intrapariet_and_P_trans",
+      "lobe": "parietal"
+    },
+    {
+      "id": 58,
+      "name": "S_oc_middle_and_Lunatus",
+      "lobe": "occipital"
+    },
+    {
+      "id": 59,
+      "name": "S_oc_sup_and_transversal",
+      "lobe": "occipital"
+    },
+    {
+      "id": 60,
+      "name": "S_occipital_ant",
+      "lobe": "occipital"
+    },
+    {
+      "id": 61,
+      "name": "S_oc-temp_lat",
+      "lobe": "temporal"
+    },
+    {
+      "id": 62,
+      "name": "S_oc-temp_med_and_Lingual",
+      "lobe": "occipital"
+    },
+    {
+      "id": 63,
+      "name": "S_orbital_lateral",
+      "lobe": "frontal"
+    },
+    {
+      "id": 64,
+      "name": "S_orbital_med-olfact",
+      "lobe": "frontal"
+    },
+    {
+      "id": 65,
+      "name": "S_orbital-H_Shaped",
+      "lobe": "frontal"
+    },
+    {
+      "id": 66,
+      "name": "S_parieto_occipital",
+      "lobe": "occipital"
+    },
+    {
+      "id": 67,
+      "name": "S_pericallosal",
+      "lobe": "cingulate"
+    },
+    {
+      "id": 68,
+      "name": "S_postcentral",
+      "lobe": "parietal"
+    },
+    {
+      "id": 69,
+      "name": "S_precentral-inf-part",
+      "lobe": "frontal"
+    },
+    {
+      "id": 70,
+      "name": "S_precentral-sup-part",
+      "lobe": "frontal"
+    },
+    {
+      "id": 71,
+      "name": "S_suborbital",
+      "lobe": "frontal"
+    },
+    {
+      "id": 72,
+      "name": "S_subparietal",
+      "lobe": "parietal"
+    },
+    {
+      "id": 73,
+      "name": "S_temporal_inf",
+      "lobe": "temporal"
+    },
+    {
+      "id": 74,
+      "name": "S_temporal_sup",
+      "lobe": "temporal"
+    },
+    {
+      "id": 75,
+      "name": "S_temporal_transverse",
+      "lobe": "temporal"
+    }
+  ]
+}
