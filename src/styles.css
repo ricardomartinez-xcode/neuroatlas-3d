@@ -32,3 +32,6 @@
   .canvas-tools button{min-width:40px;min-height:40px}
   .index-search,.filter-wrap{min-height:45px}
 }
+
+.drag-touch{display:none}
+@media(pointer:coarse){.drag-desktop{display:none}.drag-touch{display:inline}}

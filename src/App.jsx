@@ -18,6 +18,8 @@ const ORIENTATIONS=[
   {id:'inferior',label:'Inferior'}
 ];
 const EXAM_POOL=[12,14,15,16,23,25,26,27,28,29,30,33,34,36,45,11,19,21,9,18];
+const MEDIAL_REGION_IDS=new Set([3,6,7,8,9,10,11,23,30,31,32,43,45,47,66,67,72]);
+const DEEP_REGION_IDS=new Set([17,18,33,35,36,39,40,41,48,49,50,75]);
 const hemisphereName=h=>h==='left'?'Izquierdo':h==='right'?'Derecho':'Ambos';
 const hemiShort=h=>h==='left'?'I':'D';
 function makeQuestion(previous){
@@ -95,9 +97,13 @@ function App(){
  },[exam,answered,question]);
  const goToRegion=(id,h)=>{
    setExam(false);setAnswered(null);
+   const parcel=regionMap.get(id);
+   const preferInflated=DEEP_REGION_IDS.has(id)||parcel?.name.startsWith('S_');
    setSelected({id,hemi:h});
    setHemi(h);
-   setOrientation('lateral');
+   setOrientation(MEDIAL_REGION_IDS.has(id)?'medial':'lateral');
+   setSurface(preferInflated?'infl':'pial');
+   setLoading(true);
    setInspectorTab('anatomy');
    setReset(n=>n+1);
    viewerShell.current?.scrollIntoView({behavior:'smooth',block:'center'});
@@ -173,7 +179,7 @@ function App(){
              </div>}
              <div className="canvas-grid-mark">SUPERFICIE ANATÓMICA • NO DIAGNÓSTICA</div>
              <div className="canvas-bottom">
-               <span className="drag-hint"><MousePointer2 size={15}/> Arrastra para rotar · Rueda para zoom</span>
+               <span className="drag-hint"><MousePointer2 size={15}/><span className="drag-desktop">Arrastra para rotar · Rueda para zoom</span><span className="drag-touch">Desliza para girar · Pellizca para acercar</span></span>
                <div className="canvas-tools">
                  <button title="Restablecer cámara" onClick={()=>setReset(n=>n+1)}><RotateCcw size={17}/></button>
                  <button title={rotate?'Detener giro':'Rotación automática'} aria-pressed={rotate} className={rotate?'pressed':''} onClick={()=>setRotate(v=>!v)}>{rotate?<Pause size={17}/>:<Play size={17}/>}</button>
