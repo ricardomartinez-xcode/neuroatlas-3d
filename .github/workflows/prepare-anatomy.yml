@@ -19,6 +19,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements-volume.txt
       - name: Install scientific preprocessing packages
         run: python -m pip install --prefer-binary -r requirements-volume.txt
       - name: Fetch and checksum authentic TemplateFlow references
