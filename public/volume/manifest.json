@@ -290,5 +290,32 @@
     "t1_2mm.nii.gz": "7c4e551ae8150ac1f468595bd62074aa15aed747cd334fce6d177182972b6220",
     "aseg_2mm.nii.gz": "9d65771138c0be317183e546dff6b9d36cf774c3fa84be7be114a90272408108",
     "aseg_1mm.nii.gz": "0bb033414fbbd6df626d063b73801a14c71fb33b83204585f2aa1fbb4aef60dd"
-  }
+  },
+  "contextSurfaces": [
+    {
+      "file": "cortex-context-left.bin",
+      "hemisphere": "left",
+      "sourceLabels": [
+        2,
+        3
+      ],
+      "vertices": 24027,
+      "faces": 48046,
+      "sha256": "f6c61070e48c805baf0f53e0cbc2859ec289b9a07d983a1b5fc9dcb7a9dca9c2",
+      "note": "contextual silhouette generated from white and gray matter labels, not a native FreeSurfer pial surface"
+    },
+    {
+      "file": "cortex-context-right.bin",
+      "hemisphere": "right",
+      "sourceLabels": [
+        41,
+        42
+      ],
+      "vertices": 22535,
+      "faces": 45054,
+      "sha256": "664e5a1438a7f1d85367a8ad7568bdccd5157a83a7ff06f2531a02bf76f15c90",
+      "note": "contextual silhouette generated from white and gray matter labels, not a native FreeSurfer pial surface"
+    }
+  ],
+  "contextCaveat": "MNI same-space cortical hemisphere envelopes reconstructed from aseg gray/white tissue via morphological fill and marching cubes. Context is illustrative, not exact pial reconstruction."
 }

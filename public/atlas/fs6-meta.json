@@ -1,0 +1,36 @@
+{
+  "mesh": "fsaverage6",
+  "verticesPerHemisphere": 40962,
+  "facesPerHemisphere": 81920,
+  "geometrySource": "https://osf.io/jzxyr/download",
+  "sourceSha256": "ffab4ce0e067079388b863edca7f3c9aefa870b151511b8f91f48031a5576757",
+  "surfaceInterpolation": "native pial and inflated FreeSurfer fsaverage6 surfaces, no geometry interpolation",
+  "parcellation": "Destrieux fsaverage5 vertex labels transferred to fsaverage6 via nearest matching vertex on the fsaverage6 sphere; boundaries are approximate, not official fsaverage6 annotations",
+  "first10242Vertices": "coordinate-aligned to original fsaverage5 vertices; exact annotation retained for that subset",
+  "outputs": [
+    {
+      "file": "pial6_left.bin",
+      "vertices": 40962,
+      "faces": 81920,
+      "sha256": "9d7e0ba10fde447f596728b1d0e9c8f9ed4002c6f2f73e109a9b672c30ea1652"
+    },
+    {
+      "file": "infl6_left.bin",
+      "vertices": 40962,
+      "faces": 81920,
+      "sha256": "6e140474d4006b8d862a2506f3247740306561ebc9d6ae1b415b0909ac946219"
+    },
+    {
+      "file": "pial6_right.bin",
+      "vertices": 40962,
+      "faces": 81920,
+      "sha256": "a36aca0460ecccdcc7a7a52bcbe1e47786aad7a466ac3c89e58620dd4a7ed86f"
+    },
+    {
+      "file": "infl6_right.bin",
+      "vertices": 40962,
+      "faces": 81920,
+      "sha256": "6ca685219ffec37497bf52f06aa7242fe4e6cb97b545666e4b2fc6768b49368e"
+    }
+  ]
+}
