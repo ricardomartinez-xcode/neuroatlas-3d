@@ -50,3 +50,13 @@ Este sitio tiene **uso educativo y de investigación, no diagnóstico**. No atri
 - T1 + aseg 2 mm comparten affine MNI RAS. Las isosuperficies de estructuras internas utilizan aseg 1 mm del mismo espacio de plantilla.
 - Superficie cortical fsaverage5 y volumen MNI152NLin2009cAsym **no** se muestran como una superposición coregistrada: pertenecen a plantillas diferentes.
 - Marching cubes y suavizado interpolan los límites de las etiquetas de una segmentación volumétrica; no son reconstrucciones anatómicas individualizadas.
+
+## fsaverage6 (Nilearn/OSF)
+
+Archivo descargado: https://osf.io/jzxyr/download
+
+SHA-256: `ffab4ce0e067079388b863edca7f3c9aefa870b151511b8f91f48031a5576757`.
+
+Se cargan pial6, infl6, sulc6 y sphere6 originales; se conservan los índices y coordenadas geométricas. El primer bloque de 10 242 vértices coincide prácticamente con los índices de fsaverage5, con diferencias de coordenadas inferiores a 0.001 mm en puntos verificados. Las etiquetas Destrieux de los vértices restantes se propagan por vecino más próximo sobre la esfera fsaverage6. Por ello, el contorno de las etiquetas en fsaverage6 es una **aproximación**, no una segmentación distinta validada.
+
+La envolvente contextual MNI se deriva de aseg 1 mm con etiquetas de corteza y sustancia blanca, relleno de cavidades y suavizado ligero, conservando la matriz de coordenadas MNI. No es una reconstrucción pial ni un atlas histológico.

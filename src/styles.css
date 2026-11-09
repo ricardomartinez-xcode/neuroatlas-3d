@@ -153,3 +153,16 @@
  .mri-lesson>.method-alert,.deep-lesson>.method-alert{margin:0 8px 12px;font-size:10px}
 }
 
+/* v4: accurate geometry display defaults and clear isolated specimen controls */
+.deep-opacity span{letter-spacing:0;font-size:10px}
+.deep-controls button[aria-pressed="true"]{background:#e6f4f0;border-color:#80c5b8;color:#2e7e76}
+.deep-controls button:disabled{opacity:.45;cursor:not-allowed}
+.canvas-shell:has(canvas){isolation:isolate}
+@media(max-width:650px){
+ .deep-toolbar{align-items:stretch}
+ .deep-controls{display:flex;gap:5px;flex-wrap:wrap;width:100%}
+ .deep-controls button{min-height:40px}
+ .deep-canvas{height:440px}
+ .deep-opacity{flex-wrap:wrap}
+ .deep-opacity span{flex:1 1 100%}
+}

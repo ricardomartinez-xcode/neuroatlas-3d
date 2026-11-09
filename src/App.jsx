@@ -36,7 +36,7 @@ function Pill({children,selected,onClick,title}){
 function App(){
  const [regions,setRegions]=useState([]);
  const [atlasMode,setAtlasMode]=useState('cortex');
- const [selectedDeep,setSelectedDeep]=useState('hippocampus-left');
+ const [selectedDeep,setSelectedDeep]=useState('thalamus-left');
  const [hasCorticalSelection,setHasCorticalSelection]=useState(false);
  const [error,setError]=useState('');
  const [loading,setLoading]=useState(true);
@@ -122,7 +122,7 @@ function App(){
  const takeCapture=()=>{
    const c=canvasRef.current;
    if(!c){setError('El visor todavía no se ha inicializado.');return;}
-   try{const a=document.createElement('a');a.download='neuroatlas-fsaverage5.png';a.href=c.toDataURL('image/png');a.click();}
+   try{const a=document.createElement('a');a.download='neuroatlas-fsaverage6.png';a.href=c.toDataURL('image/png');a.click();}
    catch{setError('La captura no está disponible en este navegador.');}
  };
  const toggleFullscreen=async()=>{
@@ -150,7 +150,7 @@ function App(){
      <button className="rail-link" onClick={()=>jump('metodologia')}><BookOpen size={18}/>Fuentes científicas</button>
      <div className="rail-grow"/>
      <div className="rail-note"><span className="rail-note-kicker"><GraduationCap size={18}/> HERRAMIENTA DOCENTE</span><strong>Comprender el cerebro empieza por observarlo.</strong><p>Geometría anatómica de referencia y correlatos neuropsicológicos.</p></div>
-     <div className="rail-version"><span className="status-dot"/> Datos de referencia <span>v3.0</span></div>
+     <div className="rail-version"><span className="status-dot"/> Datos de referencia <span>v4.0</span></div>
    </aside>
    {navOpen&&<button className="nav-scrim" aria-label="Cerrar menú" onClick={()=>setNavOpen(false)}/>}
    <div className="app-main">
@@ -160,11 +160,11 @@ function App(){
          <div className="eyebrow"><span/> NEUROCIENCIAS · ATLAS ACADÉMICO</div>
          <h1>Explora el cerebro. <em>Comprende sus redes.</em></h1>
          <p>Explora corteza cerebral, estructuras profundas y resonancias magnéticas de referencia con correlatos neuropsicológicos.</p>
-         <div className="source-metrics"><div><strong>20 484</strong><span>VÉRTICES CORTICALES</span></div><i/><div><strong>74</strong><span>PARCELAS POR HEMISFERIO</span></div><i/><div><strong>MNI152</strong><span>RM + ANATOMÍA INTERNA</span></div></div>
+         <div className="source-metrics"><div><strong>81 924</strong><span>VÉRTICES CORTICALES · FS6</span></div><i/><div><strong>74</strong><span>PARCELAS POR HEMISFERIO</span></div><i/><div><strong>MNI152</strong><span>RM + ANATOMÍA INTERNA</span></div></div>
        </section>
        <div className="explorer-top"><div><span className="section-kicker">01 / EXPLORADOR</span><h2>Atlas neuroanatómico interactivo</h2></div><div className="atlas-actions"><span><span className="status-dot"/> Vista en tiempo real</span>{atlasMode==='cortex'&&<button onClick={takeCapture}><Download size={16}/> Exportar PNG</button>}</div></div>
        <div className="atlas-mode-tabs" role="tablist" aria-label="Modalidad de exploración neuroanatómica">
-        <button role="tab" aria-selected={atlasMode==='cortex'} className={atlasMode==='cortex'?'active':''} onClick={()=>changeMode('cortex')}><Brain size={17}/><span>Corteza cerebral</span><small>FreeSurfer · Destrieux</small></button>
+        <button role="tab" aria-selected={atlasMode==='cortex'} className={atlasMode==='cortex'?'active':''} onClick={()=>changeMode('cortex')}><Brain size={17}/><span>Corteza cerebral</span><small>FreeSurfer fs6 · Destrieux¹</small></button>
         <button role="tab" aria-selected={atlasMode==='deep'} className={atlasMode==='deep'?'active':''} onClick={()=>changeMode('deep')}><Layers3 size={17}/><span>Anatomía profunda 3D</span><small>17 estructuras reales</small></button>
         <button role="tab" aria-selected={atlasMode==='mri'} className={atlasMode==='mri'?'active':''} onClick={()=>changeMode('mri')}><Activity size={17}/><span>Resonancia T1</span><small>Cortes ortogonales</small></button>
        </div>
@@ -180,13 +180,13 @@ function App(){
              </div></div>
            </div>
            <div className="canvas-shell">
-             <div className="canvas-badge"><span className="status-dot"/> FREE SURFER · FSAVERAGE5</div>
+             <div className="canvas-badge"><span className="status-dot"/> FREE SURFER · FSAVERAGE6</div>
              <div className="compass">S <span>·</span> A <span>·</span> R</div>
              <AtlasViewer hemi={hemi} mode={surface} display={display} selected={hasCorticalSelection?selected:null}
                onSelect={handleSelection} onHover={handleHover} regionMap={regionMap} focusIds={focusIds}
                quiz={exam} orientation={orientation} reset={reset} rotate={rotate} opacity={opacity/100}
                onLoading={setLoading} onError={handleError} canvasRef={canvasRef}/>
-             {loading&&<div className="loading-overlay" role="status"><span className="load-ring"/><strong>Cargando superficie cortical…</strong><small>fsaverage5 / Destrieux</small></div>}
+             {loading&&<div className="loading-overlay" role="status"><span className="load-ring"/><strong>Cargando superficie cortical…</strong><small>fsaverage6 / Destrieux</small></div>}
              {showLabels&&!exam&&hovered&&regionMap.has(hovered.id)&&<div className="hover-label">
                <span className="hover-dot"/><div><strong>{REGION_NAMES[hovered.id]}</strong><small>Hemisferio {hemisphereName(hovered.hemi).toLowerCase()} · Seleccionar con clic</small></div>
              </div>}
@@ -227,7 +227,7 @@ function App(){
              </>}
              <div className="inspector-footnote"><Info size={15}/> La superficie pial no representa núcleos profundos ni tractos de sustancia blanca.</div>
            </div>
-           <div className="inspector-footer"><span className="status-dot"/> REFERENCIA ANATÓMICA <span>FS5</span></div>
+           <div className="inspector-footer"><span className="status-dot"/> REFERENCIA ANATÓMICA <span>FS6</span></div>
          </aside>
        </section>:atlasMode==='deep'?<DeepViewer selected={selectedDeep} onSelect={setSelectedDeep}/>:<MRIViewer selectedDeep={selectedDeep}/>}
        {error&&<div role="alert" className="error-banner"><AlertCircle size={17}/>{error}<button onClick={()=>setError('')} aria-label="Cerrar aviso"><X size={15}/></button></div>}
@@ -256,7 +256,7 @@ function App(){
        </section>
        <section id="metodologia" className="references">
          <div className="panel-heading"><div><span className="section-kicker">05 / RIGOR CIENTÍFICO</span><h2>Metodología y fuentes</h2></div><BookMarked size={20}/></div>
-         <div className="reference-grid"><div className="methods-copy"><strong>¿Qué estás observando?</strong><p>Superficies corticales de referencia fsaverage5, reconstruidas a partir de datos anatómicos y divididas por el atlas Destrieux. Las superficies infladas facilitan la observación de áreas ocultas en los surcos, pero distorsionan la forma anatómica.</p>
+         <div className="reference-grid"><div className="methods-copy"><strong>¿Qué estás observando?</strong><p>Superficies corticales de referencia fsaverage6, reconstruidas a partir de datos anatómicos y divididas por el atlas Destrieux. Las superficies infladas facilitan la observación de áreas ocultas en los surcos, pero distorsionan la forma anatómica.</p>
          <div className="method-alert"><Info size={16}/> No es una reconstrucción individual, un mapa de activación funcional, un atlas subcortical ni una herramienta diagnóstica.</div></div>
          <div className="reference-list">{SOURCES.map(s=><a key={s.url} href={s.url} target="_blank" rel="noreferrer"><span><strong>{s.title}</strong><small>{s.detail}</small></span><ExternalLink size={16}/></a>)}</div></div>
        </section>

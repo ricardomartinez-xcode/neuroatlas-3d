@@ -26,6 +26,10 @@ jobs:
         run: python scripts/fetch_volume.py
       - name: Derive aligned MRI slices and 3D segmentations
         run: python scripts/build_volume.py
+      - name: Create same-space cortical context from MNI segmentation
+        run: python scripts/build_context.py
+      - name: Build authentic fsaverage6 surfaces with labelled anatomical landmarks
+        run: python scripts/build_fs6.py
       - name: Validate generated files
         run: |
           node --test tests/atlas.test.mjs
@@ -35,6 +39,9 @@ jobs:
           root=Path('public/volume')
           manifest=json.loads((root/'manifest.json').read_text())
           assert len(manifest['structures'])>=15
+          assert len(manifest['contextSurfaces'])==2
+          assert all((root/s['file']).stat().st_size>200000 for s in manifest['contextSurfaces'])
+          assert all(Path('public/atlas',f'{mode}6_{side}.bin').stat().st_size>1000000 for mode in ('pial','infl') for side in ('left','right'))
           assert (root/'mni152_t1.bin').stat().st_size > 1000000
           assert (root/'mni152_aseg.bin').stat().st_size > 1000000
           assert all((root/s['file']).stat().st_size > 1000 for s in manifest['structures'])
@@ -44,7 +51,7 @@ jobs:
         run: |
           git config user.name 'NeuroAtlas Data Pipeline'
           git config user.email 'neuroatlas-bot@users.noreply.github.com'
-          git add public/volume
+          git add public/volume public/atlas
           if ! git diff --cached --quiet; then
             git commit -m 'data: publish TemplateFlow MNI152 volumes and derived 3D structures'
             git push origin HEAD:main

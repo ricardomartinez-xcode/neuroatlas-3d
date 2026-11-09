@@ -110,3 +110,14 @@ npm test
 
 La acción manual `Prepare NeuroAtlas MNI anatomical assets` de GitHub Actions también regenera, valida y publica los artefactos, que se distribuyen como datos estáticos en `public/volume`. Consulte el código de conversión para dimensiones, transformaciones affine RAS y checksums SHA-256 de los insumos.
 
+
+
+## v4 · Corrección de fidelidad anatómica y visualización
+
+- **Corteza con mallas auténticas fsaverage6** de 40 962 vértices por hemisferio (81 924 en ambos hemisferios), obtenidas directamente de la distribución de Nilearn/OSF. El atlas Destrieux original continúa siendo el de fsaverage5: se transfieren las etiquetas al espacio esférico de fsaverage6 por vecino más próximo. **Los límites de las parcelas interpoladas son aproximados, no anotaciones nativas fsaverage6.** Se mantienen los archivos de bajo detalle como respaldo. La cámara y la iluminación ahora encuadran la geometría de forma apropiada en pantallas anchas y móviles. Los colores categóricos poseen límites definidos, evitando gradientes inventados.
+- **Anatomía profunda en su contexto MNI real**: se ha añadido una envolvente cortical derivada exclusivamente de corteza y sustancia blanca del aseg 1 mm, en el mismo espacio de referencia que las estructuras profundas. Se permite alternar entre ubicación cerebral (escala y coordenadas conservadas) y pieza anatómica aislada ampliada uniformemente. La silueta contextual es **una aproximación visual**, no una pial individual, y no debe confundirse con una corteza cortical de alta precisión.
+- **La resonancia T1 continúa intacta**. Los tres cortes sincronizados provienen de la plantilla T1 MNI152, separados correctamente de la malla de fsaverage6, que usa otro espacio de referencia.
+
+La malla fsaverage6 está disponible en https://osf.io/jzxyr/ (vía Nilearn, suma SHA-256 documentada en `public/atlas/fs6-meta.json`). Para reproducir los datos se incorporan `scripts/build_fs6.py` y `scripts/build_context.py` al flujo `Prepare NeuroAtlas MNI anatomical assets` de GitHub Actions.
+
+**Limitaciones**: la resolución de las segmentaciones volumétricas no equivale a precisión histológica; límites de etiquetas fsaverage6 son interpolados y requieren precaución clínica; no se ha validado para uso diagnóstico. Los modelos profundos se basan en isosuperficies del atlas aseg y pueden carecer de pequeños detalles anatómicos.
