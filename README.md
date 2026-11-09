@@ -1,6 +1,6 @@
-# NeuroAtlas 3D
+# NeuroAtlas — Neuropsicología clínica y neuroanatomía 3D
 
-**Laboratorio interactivo de neuroanatomía cortical y neuropsicología** basado en geometrías reales de referencia y una parcelación cortical reproducible.
+**Laboratorio académico de neuropsicología clínica** para estudiar procesos cognitivos, síndrome y síntomas, razonamiento diferencial, estrategias de evaluación y bibliografía verificable. El atlas neuroanatómico 3D y la resonancia MNI152 T1 son apoyos de referencia, no herramientas diagnósticas ni reconstrucciones de un paciente.
 
 ## ¿Qué cambió en v2?
 

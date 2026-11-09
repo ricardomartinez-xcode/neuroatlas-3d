@@ -625,3 +625,8 @@ button:disabled{cursor:not-allowed}
  .case-footer>button{min-height:44px}
  .anatomy-support-heading h2{font-size:19px}
 }
+
+.clinical-record-empty{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:22px;min-height:265px}
+.clinical-record-empty h3{font-size:18px;color:#305565}
+.clinical-record-empty p{font-size:12px;color:#74909b;line-height:1.6}
+.clinical-record-empty button{border:none;background:#2a8379;color:#fff;font-size:11px;font-weight:800;border-radius:8px;padding:11px 15px}

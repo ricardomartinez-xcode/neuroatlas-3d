@@ -14,18 +14,21 @@ export default function ClinicalExplorer({onNavigate,externalSection='symptoms',
    if(!CLINICAL_CARDS.some(c=>c.id===requestedCard))return;
    setSelected(requestedCard);setGroup('Todas');setSearch('');
  },[requestedCard,navigationRevision]);
- const selectedCard=CLINICAL_CARDS.find(c=>c.id===selected)||CLINICAL_CARDS[0];
  const list=useMemo(()=>{
   const q=normalize(search.trim());
   return CLINICAL_CARDS.filter(c=>(group==='Todas'||c.group===group)&&
     (!q||normalize([c.title,c.group,c.system,c.anatomy,c.function,...c.symptoms,...c.conditions,...c.evaluation].join(' ')).includes(q)));
  },[search,group]);
+ useEffect(()=>{
+   if(list.length>0&&!list.some(card=>card.id===selected))setSelected(list[0].id);
+ },[list,selected]);
+ const selectedCard=list.find(card=>card.id===selected)||list[0]||null;
  return <section className="clinical-lab" id="clinica">
     <div className="panel-heading"><div><span className="section-kicker">01 / BIBLIOTECA CLÍNICA</span><h2>Procesos, síndromes y evaluación</h2></div><Brain size={23}/></div>
     <p className="section-intro">Parte del problema clínico o el dominio cognitivo. Examina manifestaciones, hipótesis diferenciales, estrategias de evaluación y evidencia científica. La neuroanatomía sirve como correlato, no como diagnóstico.</p>
     <div className="clinical-searchbar">
       <label><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)}
-        placeholder="Buscar memoria, afasia, atención, trastornos, TCE…"
+        placeholder="Buscar memoria, afasia, atención o trastornos…"
         aria-label="Buscar en la biblioteca clínica"/></label>
       <span>{list.length} de {CLINICAL_CARDS.length} fichas documentadas</span>
     </div>
@@ -41,7 +44,7 @@ export default function ClinicalExplorer({onNavigate,externalSection='symptoms',
           <ChevronRight size={15}/></button>)
          :<div className="clinical-empty">No se encontraron fichas con esos términos. Prueba con otra estructura o síntoma.</div>}
       </div>
-      <article className="clinical-record">
+      {selectedCard ? <article className="clinical-record">
         <div className="clinical-record-meta"><span><span className="status-dot"/> FICHA NEUROPSICOLÓGICA · EVIDENCIA</span><strong>{selectedCard.group}</strong></div>
         <h3>{selectedCard.title}</h3><p className="clinical-record-system">{selectedCard.system}</p>
         <div className="clinical-record-tabs" role="tablist">
@@ -78,7 +81,11 @@ export default function ClinicalExplorer({onNavigate,externalSection='symptoms',
           {selectedCard.locate?.mode==='cortex'&&<button onClick={()=>onNavigate(selectedCard.locate)}><Brain size={16}/> Localizar en corteza de referencia <ArrowUpRight size={16}/></button>}
           {selectedCard.locate?.mode==='spine'&&<button onClick={()=>onNavigate(selectedCard.locate)}><Brain size={16}/> Consultar segmento medular 3D <ArrowUpRight size={16}/></button>}
         </div>
-      </article>
+      </article> : <article className="clinical-record clinical-record-empty">
+        <h3>Sin coincidencias en la biblioteca</h3>
+        <p>Prueba otra palabra clave o selecciona «Todas» para volver a los dominios disponibles.</p>
+        <button onClick={()=>{setSearch('');setGroup('Todas');}}>Mostrar todas las fichas</button>
+      </article>}
     </div>
     <div className="clinical-disclaimer"><FileText size={17}/> Material educativo basado en asociaciones clínicas y redes funcionales, no una herramienta diagnóstica. No se reproducen baremos ni ítems de pruebas protegidas; la relación entre estructura y síntoma no es determinista.</div>
  </section>;

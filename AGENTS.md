@@ -1,5 +1,11 @@
 # AGENTS.md — Codex, NeuroAtlas 3D
 
+## Prioridad de producto (v7)
+
+La experiencia educativa se centra en **neuropsicología clínica primero**: procesos, redes cognitivas, manifestaciones y síndromes, evaluación diferencial, hipótesis y casos didácticos. La neuroanatomía 3D es un recurso **de apoyo**, accesible desde fichas clínicas y nunca presentada como explicación monocausal. Debe mantenerse esta jerarquía visual, semántica, móvil y en la navegación.
+
+Toda modificación debe conservar: (1) pantalla principal con biblioteca clínica, (2) casos académicos ficticios, (3) explorador anatómico después de la clínica, (4) fuentes y grado de certeza, (5) enlaces cruzados entre fichas y modelos. Evitar diagnósticos automatizados y reproducciones de instrumentos protegidos.
+
 ## Rol
 Ingeniería científica full-stack, visualización anatómica 3D y neuropsicología académica. Cumplir ROADMAP.md incrementalmente con criterio de aceptación, sin inventar anatomía ni referencias.
 
