@@ -1,0 +1,60 @@
+{
+  "template": "MNI152NLin2009cAsym",
+  "resolutionMm": 1,
+  "shape": [
+    193,
+    229,
+    193
+  ],
+  "affineRAS": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      -96.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      -132.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      -78.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "t1": {
+    "file": "mni152_t1_1mm.navl.gz",
+    "compressedBytes": 5771445,
+    "uncompressedBytes": 8530031,
+    "sha256": "6ac9d9f1fb0d88e6d35604b1d83057380d4db7344f05bb10a9ad194672b652fd"
+  },
+  "aseg": {
+    "file": "mni152_aseg_1mm.navl.gz",
+    "compressedBytes": 206356,
+    "uncompressedBytes": 8530031,
+    "sha256": "50ad161d306011f0aa49b1a0daad42db1530514b72bb5c430e8e50649934d9fa"
+  },
+  "originalT1": "https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz",
+  "originalAseg": "https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_seg-aseg_dseg.nii.gz",
+  "originalT1SHA256": "1f27aabea9f7183dc0c69dafa71e1787b921ca778d655d9c1bf302b273d5627a",
+  "originalAsegSHA256": "0bb033414fbbd6df626d063b73801a14c71fb33b83204585f2aa1fbb4aef60dd",
+  "conversion": "8-bit linear mapping of actual T1 template intensities; .5 to 99.5 percentile of nonzero voxels, clipped; original voxel sampling preserved. aseg label values stored as unsigned bytes without spatial resampling.",
+  "intensityLUT": {
+    "minimumPercentile": 0.5,
+    "maximumPercentile": 99.5,
+    "lowerIntensity": 32.0,
+    "upperIntensity": 9133.0
+  },
+  "rights": "See public/volume/LICENSE-MNI.txt and DATA_SOURCES.md. Data are an MRI population average, not an individual patient or clinical diagnostic acquisition.",
+  "voxelOrder": "x fastest: x + 193 * (y + 229*z)"
+}
