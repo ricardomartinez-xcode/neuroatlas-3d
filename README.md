@@ -81,3 +81,32 @@ Consulte [DATA_SOURCES.md](DATA_SOURCES.md) para enlaces de origen, verificacion
 
 El **código original de NeuroAtlas 3D** se distribuye bajo MIT. Los datos y archivos derivados de FreeSurfer/Nilearn/Destrieux se atribuyen por separado y conservan sus licencias y condiciones de origen. No se concede por este repositorio ninguna licencia comercial o clínica para datos de terceros.
 
+
+## v3 · Tríada anatómica y neuropsicológica
+
+NeuroAtlas incluye **tres modalidades complementarias** bajo la misma interfaz:
+
+1. **Corteza**: superficie FreeSurfer fsaverage5 y 74 parcelas corticales por hemisferio de Destrieux. Se mantiene en su espacio de referencia superficial original. Las parcelaciones son etiquetas de giros y surcos.
+2. **Anatomía profunda 3D**: 17 superficies derivadas de la segmentación volumétrica FreeSurfer aseg incluida con MNI152NLin2009cAsym de TemplateFlow (resolución de segmentación **1 mm**). Los modelos se obtienen con isosuperficies `marching_cubes` tras suavizado subvoxel ligero; son modelos de referencia promedio y no anatomía individual.
+3. **Resonancia magnética T1**: volumen anatómico estándar MNI152NLin2009cAsym **2 mm** con cortes axial, coronal y sagital sincronizados, coordenadas en mm y superposición opcional de etiquetas FreeSurfer aseg de la misma plantilla volumétrica.
+
+### Procedencia y trazabilidad
+
+- Fuente abierta de T1 y segmentación: https://github.com/templateflow/tpl-MNI152NLin2009cAsym
+- Descarga directa: https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/
+- [Licencia del dataset MNI](https://github.com/templateflow/tpl-MNI152NLin2009cAsym/blob/master/LICENSE), atribuida a Louis Collins / McConnell Brain Imaging Centre, McGill University, permite usar, copiar, modificar y distribuir con la preservación de su aviso de copyright. Véase la licencia original; no aplica automáticamente a todos los atlas de terceros.
+- *Los datos de volumen MNI152NLin2009cAsym no están automáticamente registrados con la superficie fsaverage5*. Las dos modalidades se muestran separadas para no inducir a error.
+- La visualización y la autoevaluación no son dispositivos médicos, no ofrecen neuroimagen clínica ni permiten inferir una lesión o diagnóstico individual.
+- Los campos neuropsicológicos indican asociaciones de redes. No representan mediciones funcionales de neuroimagen.
+
+Para regenerar y verificar los modelos, con Python 3.12 + dependencias científicas:
+
+```sh
+python -m pip install numpy scipy scikit-image nibabel
+python scripts/fetch_volume.py
+python scripts/build_volume.py
+npm test
+```
+
+La acción manual `Prepare NeuroAtlas MNI anatomical assets` de GitHub Actions también regenera, valida y publica los artefactos, que se distribuyen como datos estáticos en `public/volume`. Consulte el código de conversión para dimensiones, transformaciones affine RAS y checksums SHA-256 de los insumos.
+

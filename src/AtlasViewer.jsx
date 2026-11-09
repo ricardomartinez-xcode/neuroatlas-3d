@@ -107,7 +107,7 @@ function Surface({hemi,mode,display,selected,onSelect,onHover,regionMap,focusIds
       <meshStandardMaterial vertexColors side={THREE.DoubleSide} roughness={.9} metalness={0}
         transparent={opacity<1} opacity={opacity}/>
     </mesh>
-    {selected?.hemi===hemi&&<RegionHalo data={data} regionId={selected.id}/>}
+
   </group>;
 }
 function CameraRig({hemi,orientation,mode,reset}){

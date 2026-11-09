@@ -40,3 +40,13 @@ La licencia MIT aplica al código de esta aplicación, **no automáticamente a l
 
 Este sitio tiene **uso educativo y de investigación, no diagnóstico**. No atribuye funciones exclusivas ni predice déficits a partir del clic en una región.
 
+
+
+## v3: RM MNI152NLin2009cAsym y segmentación subcortical
+
+- Plantilla anatómica T1 y aseg FreeSurfer desde TemplateFlow: https://github.com/templateflow/tpl-MNI152NLin2009cAsym
+- Licencia de datos: https://github.com/templateflow/tpl-MNI152NLin2009cAsym/blob/master/LICENSE (Louis Collins, McConnell Brain Imaging Centre, McGill University; mantener aviso de copyright).
+- Insumos originales recuperados desde el almacenamiento público de TemplateFlow. SHA-256 fijados en `scripts/fetch_volume.py` y en `public/volume/manifest.json`.
+- T1 + aseg 2 mm comparten affine MNI RAS. Las isosuperficies de estructuras internas utilizan aseg 1 mm del mismo espacio de plantilla.
+- Superficie cortical fsaverage5 y volumen MNI152NLin2009cAsym **no** se muestran como una superposición coregistrada: pertenecen a plantillas diferentes.
+- Marching cubes y suavizado interpolan los límites de las etiquetas de una segmentación volumétrica; no son reconstrucciones anatómicas individualizadas.

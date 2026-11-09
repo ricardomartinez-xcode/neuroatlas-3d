@@ -5,6 +5,8 @@ import {
   Activity,ExternalLink,SlidersHorizontal,BookMarked,ArrowRight,Play,Pause,Network,PanelRightClose
 } from 'lucide-react';
 import AtlasViewer from './AtlasViewer.jsx';
+import {DeepViewer} from './DeepViewer.jsx';
+import MRIViewer from './MRIViewer.jsx';
 import {LOBES,DOMAINS,REGION_NAMES,SOURCES,regionInfo} from './anatomy.js';
 import './styles.css';
 
@@ -33,6 +35,9 @@ function Pill({children,selected,onClick,title}){
 }
 function App(){
  const [regions,setRegions]=useState([]);
+ const [atlasMode,setAtlasMode]=useState('cortex');
+ const [selectedDeep,setSelectedDeep]=useState('hippocampus-left');
+ const [hasCorticalSelection,setHasCorticalSelection]=useState(false);
  const [error,setError]=useState('');
  const [loading,setLoading]=useState(true);
  const [hemi,setHemi]=useState('both');
@@ -92,11 +97,11 @@ function App(){
      setAttempts(n=>n+1);
      if(yes)setCorrect(n=>n+1);
    }
-   setSelected(value);
+   setSelected(value);setHasCorticalSelection(true);
    setInspectorTab('anatomy');
  },[exam,answered,question]);
  const goToRegion=(id,h)=>{
-   setExam(false);setAnswered(null);
+   setExam(false);setAnswered(null);setAtlasMode('cortex');setHasCorticalSelection(true);
    const parcel=regionMap.get(id);
    const preferInflated=DEEP_REGION_IDS.has(id)||parcel?.name.startsWith('S_');
    setSelected({id,hemi:h});
@@ -109,11 +114,11 @@ function App(){
    viewerShell.current?.scrollIntoView({behavior:'smooth',block:'center'});
  };
  const toggleExam=()=>{
-   if(!exam){setSelected({hemi:'left',id:0});setQuestion(makeQuestion(null));setAnswered(null);setAttempts(0);setCorrect(0);setHemi('both');setDisplay('lobes');setOrientation('oblique');setReset(n=>n+1);}
+   if(!exam){setAtlasMode('cortex');setHasCorticalSelection(false);setSelected({hemi:'left',id:0});setQuestion(makeQuestion(null));setAnswered(null);setAttempts(0);setCorrect(0);setHemi('both');setDisplay('lobes');setOrientation('oblique');setReset(n=>n+1);}
    else{setAnswered(null);setDisplay('anatomy');}
    setExam(v=>!v);
  };
- const nextQuestion=()=>{setQuestion(q=>makeQuestion(q));setAnswered(null);setSelected({hemi:'left',id:0});setHemi('both');setReset(n=>n+1);};
+ const nextQuestion=()=>{setHasCorticalSelection(false);setQuestion(q=>makeQuestion(q));setAnswered(null);setSelected({hemi:'left',id:0});setHemi('both');setReset(n=>n+1);};
  const takeCapture=()=>{
    const c=canvasRef.current;
    if(!c){setError('El visor todavía no se ha inicializado.');return;}
@@ -130,32 +135,40 @@ function App(){
    return()=>document.removeEventListener('fullscreenchange',onChange);
  },[]);
  const jump=id=>{setNavOpen(false);document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});};
+ const changeMode=mode=>{setAtlasMode(mode);setNavOpen(false);if(mode!=='cortex')setExam(false);document.getElementById('explorar')?.scrollIntoView({behavior:'smooth',block:'start'});};
  return <div className="app">
    <aside className={'rail'+(navOpen?' rail-open':'')}>
      <div className="brand"><div className="brand-icon"><Brain size={23}/></div><div><strong>NEURO<span>ATLAS</span></strong><small>LABORATORIO 3D</small></div></div>
      <div className="rail-section">LABORATORIO</div>
-     <button className="rail-link active" onClick={()=>jump('explorar')}><Brain size={18}/>Atlas cortical<ChevronRight size={14} className="trailing"/></button>
-     <button className="rail-link" onClick={()=>{setDomain('language');jump('explorar');}}><Network size={18}/>Redes neuropsicológicas</button>
+     <button className={'rail-link'+(atlasMode==='cortex'?' active':'')} onClick={()=>changeMode('cortex')}><Brain size={18}/>Atlas cortical<ChevronRight size={14} className="trailing"/></button>
+     <button className={'rail-link'+(atlasMode==='deep'?' active':'')} onClick={()=>changeMode('deep')}><Layers3 size={18}/>Anatomía profunda</button>
+     <button className={'rail-link'+(atlasMode==='mri'?' active':'')} onClick={()=>changeMode('mri')}><Activity size={18}/>Resonancia T1</button>
+     <button className="rail-link" onClick={()=>{setAtlasMode('cortex');setDomain('language');jump('explorar');}}><Network size={18}/>Redes neuropsicológicas</button>
      <button className={'rail-link'+(exam?' is-quiz':'')} onClick={()=>{toggleExam();jump('explorar');setNavOpen(false);}}><Target size={18}/>Modo evaluación</button>
      <div className="rail-section rail-second">REFERENCIA</div>
      <button className="rail-link" onClick={()=>jump('regiones')}><Layers3 size={18}/>Índice anatómico</button>
      <button className="rail-link" onClick={()=>jump('metodologia')}><BookOpen size={18}/>Fuentes científicas</button>
      <div className="rail-grow"/>
      <div className="rail-note"><span className="rail-note-kicker"><GraduationCap size={18}/> HERRAMIENTA DOCENTE</span><strong>Comprender el cerebro empieza por observarlo.</strong><p>Geometría anatómica de referencia y correlatos neuropsicológicos.</p></div>
-     <div className="rail-version"><span className="status-dot"/> Datos fsaverage5 <span>v2.0</span></div>
+     <div className="rail-version"><span className="status-dot"/> Datos de referencia <span>v3.0</span></div>
    </aside>
    {navOpen&&<button className="nav-scrim" aria-label="Cerrar menú" onClick={()=>setNavOpen(false)}/>}
    <div className="app-main">
-     <header className="topbar"><div className="top-path"><button className="hamburger" onClick={()=>setNavOpen(true)} aria-label="Abrir navegación"><Menu size={20}/></button><span>Laboratorio de neurociencias</span><ChevronRight size={15}/><strong>Atlas cortical interactivo</strong></div><div className="top-actions"><span className="source-status"><span className="status-dot"/> DATOS ANATÓMICOS REALES</span><button className="help-btn" onClick={()=>jump('metodologia')} title="Fuentes y limitaciones"><Info size={17}/></button><div className="avatar">NA</div></div></header>
+     <header className="topbar"><div className="top-path"><button className="hamburger" onClick={()=>setNavOpen(true)} aria-label="Abrir navegación"><Menu size={20}/></button><span>Laboratorio de neurociencias</span><ChevronRight size={15}/><strong>Atlas neuroanatómico interactivo</strong></div><div className="top-actions"><span className="source-status"><span className="status-dot"/> DATOS ANATÓMICOS REALES</span><button className="help-btn" onClick={()=>jump('metodologia')} title="Fuentes y limitaciones"><Info size={17}/></button><div className="avatar">NA</div></div></header>
      <main className="content">
        <section id="explorar" className="page-header">
          <div className="eyebrow"><span/> NEUROCIENCIAS · ATLAS ACADÉMICO</div>
          <h1>Explora el cerebro. <em>Comprende sus redes.</em></h1>
-         <p>Un espacio de estudio interactivo para conectar la anatomía cortical con la neuropsicología.</p>
-         <div className="source-metrics"><div><strong>20 484</strong><span>VÉRTICES CORTICALES</span></div><i/><div><strong>74</strong><span>PARCELAS POR HEMISFERIO</span></div><i/><div><strong>fsaverage5</strong><span>SUPERFICIE DE REFERENCIA</span></div></div>
+         <p>Explora corteza cerebral, estructuras profundas y resonancias magnéticas de referencia con correlatos neuropsicológicos.</p>
+         <div className="source-metrics"><div><strong>20 484</strong><span>VÉRTICES CORTICALES</span></div><i/><div><strong>74</strong><span>PARCELAS POR HEMISFERIO</span></div><i/><div><strong>MNI152</strong><span>RM + ANATOMÍA INTERNA</span></div></div>
        </section>
-       <div className="explorer-top"><div><span className="section-kicker">01 / EXPLORADOR</span><h2>Atlas anatómico 3D</h2></div><div className="atlas-actions"><span><span className="status-dot"/> Vista en tiempo real</span><button onClick={takeCapture}><Download size={16}/> Exportar PNG</button></div></div>
-       <section className="viewer-workspace" ref={viewerShell}>
+       <div className="explorer-top"><div><span className="section-kicker">01 / EXPLORADOR</span><h2>Atlas neuroanatómico interactivo</h2></div><div className="atlas-actions"><span><span className="status-dot"/> Vista en tiempo real</span>{atlasMode==='cortex'&&<button onClick={takeCapture}><Download size={16}/> Exportar PNG</button>}</div></div>
+       <div className="atlas-mode-tabs" role="tablist" aria-label="Modalidad de exploración neuroanatómica">
+        <button role="tab" aria-selected={atlasMode==='cortex'} className={atlasMode==='cortex'?'active':''} onClick={()=>changeMode('cortex')}><Brain size={17}/><span>Corteza cerebral</span><small>FreeSurfer · Destrieux</small></button>
+        <button role="tab" aria-selected={atlasMode==='deep'} className={atlasMode==='deep'?'active':''} onClick={()=>changeMode('deep')}><Layers3 size={17}/><span>Anatomía profunda 3D</span><small>17 estructuras reales</small></button>
+        <button role="tab" aria-selected={atlasMode==='mri'} className={atlasMode==='mri'?'active':''} onClick={()=>changeMode('mri')}><Activity size={17}/><span>Resonancia T1</span><small>Cortes ortogonales</small></button>
+       </div>
+       {atlasMode==='cortex'?<section className="viewer-workspace" ref={viewerShell}>
          <div className="stage-column">
            <div className="stage-toolbar">
              <div className="control-group"><span className="control-label">HEMISFERIO</span><div className="segmented">
@@ -169,7 +182,7 @@ function App(){
            <div className="canvas-shell">
              <div className="canvas-badge"><span className="status-dot"/> FREE SURFER · FSAVERAGE5</div>
              <div className="compass">S <span>·</span> A <span>·</span> R</div>
-             <AtlasViewer hemi={hemi} mode={surface} display={display} selected={selected}
+             <AtlasViewer hemi={hemi} mode={surface} display={display} selected={hasCorticalSelection?selected:null}
                onSelect={handleSelection} onHover={handleHover} regionMap={regionMap} focusIds={focusIds}
                quiz={exam} orientation={orientation} reset={reset} rotate={rotate} opacity={opacity/100}
                onLoading={setLoading} onError={handleError} canvasRef={canvasRef}/>
@@ -216,7 +229,7 @@ function App(){
            </div>
            <div className="inspector-footer"><span className="status-dot"/> REFERENCIA ANATÓMICA <span>FS5</span></div>
          </aside>
-       </section>
+       </section>:atlasMode==='deep'?<DeepViewer selected={selectedDeep} onSelect={setSelectedDeep}/>:<MRIViewer selectedDeep={selectedDeep}/>}
        {error&&<div role="alert" className="error-banner"><AlertCircle size={17}/>{error}<button onClick={()=>setError('')} aria-label="Cerrar aviso"><X size={15}/></button></div>}
        <div className="below-grid">
          <section className="network-card">
