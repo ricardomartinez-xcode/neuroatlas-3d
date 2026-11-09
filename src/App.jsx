@@ -1,6 +1,6 @@
 import React,{useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {
-  Brain,BookOpen,Info,Search,ChevronDown,ChevronRight,RotateCcw,Layers3,GraduationCap,
+  Brain,BookOpen,Database,Info,Search,ChevronDown,ChevronRight,RotateCcw,Layers3,GraduationCap,
   Maximize2,Minimize2,Download,Menu,X,Target,CheckCircle2,AlertCircle,Eye,MousePointer2,
   Activity,ExternalLink,SlidersHorizontal,BookMarked,ArrowRight,Play,Pause,Network,PanelRightClose
 } from 'lucide-react';
@@ -35,6 +35,28 @@ function makeQuestion(previous){
 function Pill({children,selected,onClick,title}){
  return <button type="button" title={title} className={'seg-pill'+(selected?' selected':'')} onClick={onClick}>{children}</button>;
 }
+const DATA_PROVENANCE={
+ cortex:{
+  source:'FreeSurfer · fsaverage6',detail:'Superficie cortical de referencia con 40 962 vértices por hemisferio; Destrieux transferido desde fsaverage5.',
+  origin:'Nilearn / FreeSurfer',url:'https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_surf_fsaverage.html',
+  caveat:'Superficie promedio, no imagen de un paciente. Los límites de las etiquetas interpoladas son aproximados.'
+ },
+ deep:{
+  source:'MNI152NLin2009cAsym · aseg 1 mm',detail:'17 estructuras derivadas de segmentación anatómica volumétrica; contraste opcional con un corte T1 del mismo espacio.',
+  origin:'TemplateFlow',url:'https://www.templateflow.org/',
+  caveat:'Isosuperficies derivadas de etiquetas, no histología ni reconstrucciones individuales.'
+ },
+ mri:{
+  source:'MNI152NLin2009cAsym · T1w',detail:'Volumen real de resonancia magnética de referencia, disponible con resolución de 1 mm y modo ligero de 2 mm.',
+  origin:'TemplateFlow',url:'https://www.templateflow.org/',
+  caveat:'Plantilla poblacional de referencia; el zoom y las etiquetas no representan actividad cerebral.'
+ },
+ spine:{
+  source:'Visible Human Male · 30 segmentos',detail:'Modelo del Human Reference Atlas construido a partir del Visible Human Project con 30 geometrías espinales independientes.',
+  origin:'HuBMAP / NIH 3D · CC BY 4.0',url:'https://3d.nih.gov/entries/21018',
+  caveat:'Modelo anatómico de referencia; no incluye raíces periféricas, plexos, tractos internos ni vértebras.'
+ }
+};
 function App(){
  const [regions,setRegions]=useState([]);
  const [atlasMode,setAtlasMode]=useState(()=>{
@@ -174,24 +196,39 @@ function App(){
      <button className="rail-link" onClick={()=>jump('metodologia')}><BookOpen size={18}/>Fuentes científicas</button>
      <div className="rail-grow"/>
      <div className="rail-note"><span className="rail-note-kicker"><GraduationCap size={18}/> HERRAMIENTA DOCENTE</span><strong>Comprender el cerebro empieza por observarlo.</strong><p>Geometría anatómica de referencia y correlatos neuropsicológicos.</p></div>
-     <div className="rail-version"><span className="status-dot"/> Datos de referencia <span>v5.0</span></div>
+     <div className="rail-version"><span className="status-dot"/> Datos de referencia <span>v6.0</span></div>
    </aside>
    {navOpen&&<button className="nav-scrim" aria-label="Cerrar menú" onClick={()=>setNavOpen(false)}/>}
    <div className="app-main">
-     <header className="topbar"><div className="top-path"><button className="hamburger" onClick={()=>setNavOpen(true)} aria-label="Abrir navegación"><Menu size={20}/></button><span>Laboratorio de neurociencias</span><ChevronRight size={15}/><strong>Atlas neuroanatómico interactivo</strong></div><div className="top-actions"><span className="source-status"><span className="status-dot"/> DATOS ANATÓMICOS REALES</span><button className="help-btn" onClick={()=>jump('metodologia')} title="Fuentes y limitaciones"><Info size={17}/></button><div className="avatar">NA</div></div></header>
+     <header className="topbar"><div className="top-path"><button className="hamburger" onClick={()=>setNavOpen(true)} aria-label="Abrir navegación"><Menu size={20}/></button><span>Laboratorio de neurociencias</span><ChevronRight size={15}/><strong>Atlas neuroanatómico interactivo</strong></div><div className="top-actions"><span className="source-status"><span className="status-dot"/> FUENTES ANATÓMICAS DOCUMENTADAS</span><button className="help-btn" onClick={()=>jump('metodologia')} title="Fuentes y limitaciones"><Info size={17}/></button><div className="avatar">NA</div></div></header>
      <main className="content">
        <section id="explorar" className="page-header">
          <div className="eyebrow"><span/> NEUROCIENCIAS · ATLAS ACADÉMICO</div>
-         <h1>Explora el cerebro. <em>Comprende sus redes.</em></h1>
-         <p>Explora corteza cerebral, anatomía profunda, médula espinal y resonancias magnéticas. Consulta correlaciones anatomo-funcionales y fichas de neuropsicología clínica.</p>
-         <div className="source-metrics"><div><strong>81 924</strong><span>VÉRTICES CORTICALES · FS6</span></div><i/><div><strong>74</strong><span>PARCELAS POR HEMISFERIO</span></div><i/><div><strong>MNI152</strong><span>RM + ANATOMÍA INTERNA</span></div></div>
+         <h1>Neuroanatomía <em>basada en evidencia.</em></h1>
+         <p>Laboratorio digital para estudiar estructuras del sistema nervioso, interpretar neuroimagen de referencia y relacionar anatomía con neuropsicología clínica.</p>
+         <div className="source-metrics">
+          <div><strong>81 924</strong><span>VÉRTICES CORTICALES</span></div><i/>
+          <div><strong>17</strong><span>ESTRUCTURAS INTERNAS</span></div><i/>
+          <div><strong>30</strong><span>SEGMENTOS MEDULARES</span></div><i/>
+          <div><strong>1 mm</strong><span>RM T1 · ALTA RESOLUCIÓN</span></div>
+         </div>
        </section>
        <div className="explorer-top"><div><span className="section-kicker">01 / EXPLORADOR</span><h2>Atlas neuroanatómico interactivo</h2></div><div className="atlas-actions"><span><span className="status-dot"/> Vista en tiempo real</span>{atlasMode==='cortex'&&<button onClick={takeCapture}><Download size={16}/> Exportar PNG</button>}</div></div>
        <div className="atlas-mode-tabs" role="tablist" aria-label="Modalidad de exploración neuroanatómica">
         <button role="tab" aria-selected={atlasMode==='cortex'} className={atlasMode==='cortex'?'active':''} onClick={()=>changeMode('cortex')}><Brain size={17}/><span>Corteza cerebral</span><small>FreeSurfer fs6 · Destrieux¹</small></button>
-        <button role="tab" aria-selected={atlasMode==='deep'} className={atlasMode==='deep'?'active':''} onClick={()=>changeMode('deep')}><Layers3 size={17}/><span>Anatomía profunda 3D</span><small>17 estructuras reales</small></button>
+        <button role="tab" aria-selected={atlasMode==='deep'} className={atlasMode==='deep'?'active':''} onClick={()=>changeMode('deep')}><Layers3 size={17}/><span>Anatomía profunda 3D</span><small>17 estructuras segmentadas</small></button>
         <button role="tab" aria-selected={atlasMode==='mri'} className={atlasMode==='mri'?'active':''} onClick={()=>changeMode('mri')}><Activity size={17}/><span>Resonancia T1</span><small>Visor ampliado · tres planos</small></button>
-        <button role="tab" aria-selected={atlasMode==='spine'} className={atlasMode==='spine'?'active':''} onClick={()=>changeMode('spine')}><Activity size={17}/><span>Médula espinal</span><small>30 segmentos HRA · 3D</small></button>
+        <button role="tab" aria-selected={atlasMode==='spine'} className={atlasMode==='spine'?'active':''} onClick={()=>changeMode('spine')}><Activity size={17}/><span>Médula espinal</span><small>HRA · 30 segmentos</small></button>
+       </div>
+       <div className="atlas-provenance" aria-label="Procedencia y límites de los datos anatómicos">
+         <div className="atlas-provenance-icon"><Database size={18}/></div>
+         <div className="atlas-provenance-copy">
+           <div className="atlas-provenance-header"><span>FUENTE ANATÓMICA</span><strong>{DATA_PROVENANCE[atlasMode].source}</strong></div>
+           <p>{DATA_PROVENANCE[atlasMode].detail}</p>
+           <small>{DATA_PROVENANCE[atlasMode].caveat}</small>
+         </div>
+         <a href={DATA_PROVENANCE[atlasMode].url} target="_blank" rel="noreferrer noopener"
+           title="Consultar procedencia original">{DATA_PROVENANCE[atlasMode].origin}<ExternalLink size={15}/></a>
        </div>
        {atlasMode==='cortex'?<section className="viewer-workspace" ref={viewerShell}>
          <div className="stage-column">

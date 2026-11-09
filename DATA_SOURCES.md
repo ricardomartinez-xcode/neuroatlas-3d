@@ -73,3 +73,15 @@ La vista de anatomía profunda permite mostrar un plano sagital T1 real de la mi
 - Contenido: mallas independientes de segmentos cervicales C1-C8, torácicos T1-T12, lumbares L1-L5 y sacros S1-S5.
 - No incluyen raíces, nervios craneales, plexos, tractos internos ni datos de un paciente. Nivel medular y nivel vertebral no son equivalentes.
 - Descarga reproducible: scripts/fetch_spine.py. Publicación automatizada: .github/workflows/prepare-spine.yml.
+
+## MNI152NLin2009cAsym · Imagen de resonancia T1w a 1 mm
+
+- Plantilla anatómica original: `https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz`.
+- SHA-256 NIfTI original de T1 a 1 mm: `1f27aabea9f7183dc0c69dafa71e1787b921ca778d655d9c1bf302b273d5627a`.
+- Segmentación de referencia: `https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_seg-aseg_dseg.nii.gz`.
+- SHA-256 aseg 1 mm original: `0bb033414fbbd6df626d063b73801a14c71fb33b83204585f2aa1fbb4aef60dd`.
+- Datos completos muestreados a 1 mm: 193 × 229 × 193 vóxeles; ejes RAS, afín diagonal de 1 mm con traslación de -96, -132 y -78 mm.
+- Conversión: int16 NIfTI T1 -> uint8 NAVL para visualización en navegador, por ajuste lineal del percentil 0.5 al 99.5 de vóxeles positivos, sin interpolación ni cambio de geometría; aseg mantiene valores de etiqueta de cada vóxel.
+- Formato resultante: `public/volume/mni152_t1_1mm.navl.gz` y `mni152_aseg_1mm.navl.gz`, gzip, más metadatos `mri-1mm-manifest.json`.
+- Licencia: se conserva `public/volume/LICENSE-MNI.txt`. No equivale a licencia clínica; se trata de plantilla de referencia poblacional.
+- Reproducibilidad: scripts/fetch_mri_hd.py y scripts/build_mri_hd.py; workflow .github/workflows/prepare-mri-hd.yml.

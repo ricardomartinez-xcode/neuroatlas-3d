@@ -1,0 +1,42 @@
+name: Prepare genuine 1 mm MNI152 T1 MRI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-mni-1mm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Scientific image pre-processing
+        run: python -m pip install --prefer-binary "numpy==2.2.6" "nibabel==5.3.2"
+      - name: Fetch genuine TemplateFlow 1 mm references and check SHA256
+        run: python scripts/fetch_mri_hd.py
+      - name: Convert anatomical volumes into reproducible 1 mm compressed NAVL
+        run: python scripts/build_mri_hd.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify MRI source, spatial metadata, content and existing atlas assets
+        run: npm test
+      - name: Publish anatomical reference volumes
+        run: |
+          git config user.name 'NeuroAtlas MRI Pipeline'
+          git config user.email 'neuroatlas-bot@users.noreply.github.com'
+          git add public/volume/mni152_t1_1mm.navl.gz public/volume/mni152_aseg_1mm.navl.gz public/volume/mri-1mm-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: publish SHA256-verified TemplateFlow 1 mm MRI and segmentation'
+            git push origin HEAD:main
+          fi
+

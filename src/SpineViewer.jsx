@@ -88,8 +88,8 @@ export default function SpineViewer({selectedLevel='C4'}){
  const info=levelInfo(selected);
  return <section className="spine-lesson">
   <div className="mode-explanation"><span className="evidence-icon"><Bone size={18}/></span><div>
-   <strong>Médula espinal 3D: 30 segmentos reales identificables</strong>
-   <p>Modelo del Human Reference Atlas (HuBMAP), derivado de Visible Human Male. Representa C1–C8, T1–T12, L1–L5 y S1–S5 con mallas independientes de anatomía de referencia.</p>
+   <strong>Médula espinal 3D: 30 segmentos anatómicos de referencia</strong>
+   <p>Modelo de referencia producido por HuBMAP a partir de imágenes del Visible Human Male. Representa C1–C8, T1–T12, L1–L5 y S1–S5 con mallas independientes de anatomía de referencia.</p>
   </div></div>
   <div className="spine-workspace">
    <div className="spine-left">

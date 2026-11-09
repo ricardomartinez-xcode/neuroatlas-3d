@@ -132,3 +132,12 @@ La vista de anatomía profunda permite mostrar un plano sagital T1 real de la mi
 - Médula 3D con 30 segmentos auténticos C1-S5 de Human Reference Atlas / National Library of Medicine, CC BY 4.0. Fuente, licencia y SHA256 en DATA_SOURCES.md; workflow prepare-spine.yml y scripts/fetch_spine.py.
 - Faltan modelos auténticos de raíces, nervios periféricos y tractos medulares. No se sustituirán por geometría sintética que aparente tener validación anatómica.
 - El plan maestro de implementación está en ROADMAP.md y las instrucciones para Codex están en AGENTS.md.
+
+## v6 — Interfaz académica y RM de referencia a 1 mm
+
+La RM MNI152NLin2009cAsym de 1 mm se distribuye como los archivos **reales de T1 y aseg procedentes de TemplateFlow**, convertidos de NIfTI a escala de grises y etiquetas NAVL y comprimidos con gzip. No es un modelo generativo ni una ampliación de una imagen de 2 mm. La opción ligera de 2 mm permanece disponible. En navegadores sin descompresión gzip en memoria, el visor informa la limitación y vuelve a 2 mm.
+
+La interfaz ofrece: panel explícito de procedencia científica para cada modalidad, recursos de consulta a sus fuentes, mayor jerarquía tipográfica, fichas académicas ampliadas, controles para pantalla móvil, modalidades cortical, subcortical, resonancia y médula. La cobertura anatómica no implica completitud neuroanatómica: **las raíces y nervios periféricos y la tractografía de sustancia blanca todavía no están modelados**.
+
+Fuentes y transformaciones se especifican en DATA_SOURCES.md, y el trabajo restante se enumera en ROADMAP.md. La reconstrucción digital sigue siendo una interpretación geométrica de datos anatómicos, no una fotografía, ni una adquisición clínica de un individuo. La biblioteca neuropsicológica es material académico, no un sistema diagnóstico.
+

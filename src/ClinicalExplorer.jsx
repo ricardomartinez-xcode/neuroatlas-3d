@@ -71,7 +71,7 @@ export default function ClinicalExplorer({onNavigate}){
         <div className="clinical-actions">
           {selectedCard.locate?.mode==='deep'&&<button onClick={()=>onNavigate(selectedCard.locate)}><Brain size={16}/> Ubicar en anatomía profunda <ArrowUpRight size={16}/></button>}
           {selectedCard.locate?.mode==='cortex'&&<button onClick={()=>onNavigate(selectedCard.locate)}><Brain size={16}/> Localizar en corteza 3D <ArrowUpRight size={16}/></button>}
-          {selectedCard.locate?.mode==='spine'&&<span className="clinical-pending">La localización 3D medular requiere verificar la licencia y los datos del atlas PAM50.</span>}
+          {selectedCard.locate?.mode==='spine'&&<button onClick={()=>onNavigate(selectedCard.locate)}><Brain size={16}/> Ver segmento de médula 3D <ArrowUpRight size={16}/></button>}
         </div>
       </article>
     </div>

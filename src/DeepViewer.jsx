@@ -161,7 +161,7 @@ export function DeepViewer({selected,onSelect}){
  return <section className="deep-lesson">
   <div className="mode-explanation"><span className="evidence-icon"><Layers3 size={18}/></span>
    <div><strong>Anatomía profunda segmentada · referencia MNI152</strong>
-    <p>Modelos extraídos de una segmentación anatómica de 1 mm. Utiliza la vista contextual para localizar cada estructura o la vista aislada para examinar su morfología.</p>
+    <p>Superficies derivadas de etiquetas anatómicas MNI152 a 1 mm. Explora estructuras en su contexto de resonancia o examínalas de forma aislada; no son fotografías ni especímenes individuales.</p>
    </div>
   </div>
   <div className="deep-split">

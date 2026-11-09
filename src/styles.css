@@ -288,3 +288,233 @@
 @media(max-width:780px){.atlas-mode-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.spine-workspace{grid-template-columns:1fr}.spine-left{border-right:0;border-bottom:1px solid #e1e9eb}.spine-canvas{height:550px}.spine-right{padding:20px}}
 @media(max-width:540px){.spine-canvas{height:480px}.spine-segment-index{padding:11px}.spine-segment-index>div>strong{width:56px}.spine-segment-index button{min-width:35px;min-height:38px}.spine-lesson>.method-alert{margin:10px}.atlas-mode-tabs button{min-height:78px;padding:9px 11px}.atlas-mode-tabs button span{font-size:11px}.atlas-mode-tabs button small{font-size:9px}}
 
+
+/* =========================================================================
+   NEUROATLAS / Academic interface v6
+   Evidence-forward navigation, real-reference attribution, readable clinical
+   documentation and responsive neuroimaging study surfaces.
+   ========================================================================= */
+:root{
+ --ink:#193542;--muted:#617c87;--line:#dfe8ec;--teal:#287f7b;--navy:#102c3e;
+ --paper:#f3f6f7;--academic-blue:#294e67;--provenance:#ecf3f5;
+}
+html{scroll-padding-top:92px}
+body{font-size:14px;letter-spacing:.005em;background:var(--paper)}
+button{transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+button:disabled{cursor:not-allowed}
+.rail{
+ background:linear-gradient(178deg,#173747,#0c2331 88%);
+ border-right:1px solid #2a4f5c;color:#dbe8ed;
+ padding:25px 16px 18px
+}
+.brand{padding:5px 8px 38px}
+.brand-icon{background:#245e69;color:#d2f2ea;box-shadow:0 0 0 1px #54848a65}
+.brand strong{color:#f0f7f7;font-size:18px;letter-spacing:-.65px}
+.brand strong span{color:#79d2c5}
+.brand small{color:#a9c8d0;font-size:9px;letter-spacing:1.55px}
+.rail-section{color:#8fb2bc;font-size:10px;margin:4px 11px 12px;letter-spacing:1.4px}
+.rail-second{margin-top:30px}
+.rail-link{
+ color:#b4cbd3;font-size:12px;letter-spacing:.04px;
+ min-height:44px;border:1px solid transparent;padding:12px 11px
+}
+.rail-link:hover,.rail-link.is-quiz{background:#224553;color:#e5f8f5;border-color:#315d67}
+.rail-link.active{background:#266468;color:#eafff9;border-color:#48918b}
+.rail-link .trailing{opacity:.8}
+.rail-note{
+ border:1px solid #4175817a;background:linear-gradient(140deg,#235766,#163846);
+ color:#ecf9f5;padding:17px
+}
+.rail-note-kicker{color:#92d9c8;font-size:10px}
+.rail-note strong{font-size:13px;letter-spacing:-.2px;line-height:1.5}
+.rail-note p{font-size:11px;color:#bad6de;line-height:1.55}
+.rail-version{border-top-color:#416171;color:#93b6c0;font-size:10px;padding-top:18px}
+.topbar{position:sticky;top:0;z-index:30;background:#fffdfdf3;backdrop-filter:blur(12px);
+ box-shadow:0 1px 0 #dce7eb;min-height:72px}
+.top-path{font-size:12px;color:#7a939e}
+.top-path strong{color:#294c5c;font-weight:800}
+.source-status{font-size:10px;color:#377e77;letter-spacing:.6px}
+.source-status .status-dot{background:#3c9688}
+.content{max-width:1550px;padding:31px 37px 46px}
+.page-header{
+ background:linear-gradient(118deg,#fff 63%,#edf5f5 100%);
+ border:1px solid #e0eaed;border-radius:17px;padding:26px 28px 18px;
+ box-shadow:0 7px 25px #24435c08
+}
+.eyebrow,.section-kicker{font-size:10.5px;color:#348c86;letter-spacing:1.2px}
+.page-header h1{font:800 clamp(28px,3.2vw,41px)/1.18 Manrope,sans-serif;
+ letter-spacing:-1.2px;margin:14px 0 12px}
+.page-header h1 em{color:#2c8783}
+.page-header>p{max-width:920px;font-size:13.5px;color:#5c7884;line-height:1.75}
+.source-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:23px 0 0}
+.source-metrics div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+ background:#ffffffbd;padding:12px 14px;border:1px solid #e3edef;border-radius:10px}
+.source-metrics strong{font:800 18px Manrope,sans-serif;letter-spacing:-.55px;color:#2a5961}
+.source-metrics span{font-size:9.5px;line-height:1.45;color:#7d96a2;letter-spacing:.65px}
+.source-metrics>i{display:none}
+.explorer-top{margin:29px 2px 11px}
+.explorer-top h2,.panel-heading h2{font-size:21px;letter-spacing:-.55px}
+.atlas-actions button{font-size:11.5px;min-height:42px}
+.atlas-mode-tabs{gap:10px;margin:14px 0 10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.atlas-mode-tabs button{min-height:78px;padding:15px 16px;background:#fff;
+ border-radius:12px;border:1px solid #dce8ec;grid-template-columns:25px 1fr;
+ box-shadow:0 2px 8px #0b304508}
+.atlas-mode-tabs button svg{width:20px;height:20px;color:#7298a2}
+.atlas-mode-tabs button span{font:800 12px Manrope,sans-serif;color:#426373}
+.atlas-mode-tabs button small{font-size:10px;color:#829ca6}
+.atlas-mode-tabs button.active{background:#e8f4f1;border-color:#89bfb6;
+ box-shadow:0 0 0 1px #84bdb251,0 3px 12px #2c80781c}
+.atlas-mode-tabs button.active span{color:#236e69}
+.atlas-mode-tabs button:hover:not(.active){border-color:#accdce;background:#f8fbfb}
+.atlas-provenance{display:flex;gap:14px;align-items:center;margin:0 0 15px;padding:15px 17px;
+ background:var(--provenance);border:1px solid #d8e6e9;border-radius:12px;color:#375766}
+.atlas-provenance-icon{height:40px;width:40px;flex:none;border-radius:11px;background:#d8ebeb;
+ color:#367f85;display:grid;place-items:center}
+.atlas-provenance-copy{flex:1;min-width:0}
+.atlas-provenance-header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.atlas-provenance-header span{font-size:10px;color:#668d98;font-weight:800;letter-spacing:1.1px}
+.atlas-provenance-header strong{font:800 12px Manrope,sans-serif;color:#274d5b}
+.atlas-provenance p{margin:6px 0 2px;font-size:11.5px;line-height:1.5;color:#557682}
+.atlas-provenance small{display:block;font-size:10px;color:#7b929c;line-height:1.5}
+.atlas-provenance>a{border:1px solid #bdd7dc;background:#fff;border-radius:8px;
+ display:inline-flex;align-items:center;gap:7px;color:#367c7b;white-space:nowrap;
+ padding:10px 11px;font-size:10.5px;font-weight:800}
+.atlas-provenance>a:hover{background:#f0fbf8;border-color:#72b5ac}
+.stage-column,.inspector,.deep-lesson,.mri-lesson,.spine-lesson,.clinical-lab,
+.network-card,.quiz-card,.regions-section,.references{border-color:#dce7eb;
+ box-shadow:0 5px 21px #18344708;border-radius:13px}
+.canvas-shell{height:510px}
+.canvas-badge{font-size:10.5px;letter-spacing:.8px}
+.stage-toolbar{padding:15px}
+.stage-settings{padding:16px}
+.control-label,.setting-line>span,.setting-line>label{font-size:10.5px;color:#698894}
+.seg-pill{font-size:11px;padding:9px 12px}
+.orientation-row button{font-size:11px;padding:9px 11px}
+.inspector-content h3{font-size:23px}
+.inspector-tabs button{font-size:12px}
+.info-description,.clinical-note p{font-size:12.5px;line-height:1.8}
+.field-kicker{font-size:11px}
+.property-list span,.property-list strong{font-size:11.5px}
+.inspector-footnote{font-size:11px}
+.mode-explanation{padding:19px 21px;background:linear-gradient(96deg,#eef7f6,#f5faf9)}
+.mode-explanation strong{font-size:13px;color:#295a65}
+.mode-explanation p{font-size:12px;color:#5f7d88;line-height:1.65}
+.deep-canvas{height:520px}
+.deep-toolbar{padding:13px 15px}
+.deep-toolbar label,.deep-toolbar select,.deep-controls button{font-size:11px}
+.deep-controls button{min-height:40px}
+.deep-detail h3{font-size:23px}
+.deep-detail>p:not(.deep-original),.deep-neutral-note{font-size:12px}
+.deep-index button{font-size:11px;min-height:40px}
+.spine-canvas{height:620px}
+.spine-segment-index button{font-size:11px}
+.spine-right>p:not(.spine-subtitle){font-size:12.5px}
+.mri-academic-bar{display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+ padding:14px 17px;border-bottom:1px solid #dfe9eb;background:#fafdfc}
+.mri-academic-bar>div:first-child{display:flex;align-items:center;gap:9px;color:#518d8c;flex:1 1 230px}
+.mri-academic-bar strong{font-size:12px;color:#345c67}
+.mri-academic-bar>div:first-child>span{font-size:10px;color:#8299a1}
+.mri-quality-picker{display:flex;align-items:center;gap:3px;padding:3px;background:#e8f0f1;border-radius:9px}
+.mri-quality-picker button{padding:10px 12px;border:0;background:transparent;border-radius:7px;color:#718e98;font-size:11px;font-weight:750}
+.mri-quality-picker button.active{background:#fff;color:#287e77;box-shadow:0 1px 5px #153e411c}
+.mri-overlay-toggle,.mri-reset{display:inline-flex;align-items:center;gap:7px;
+ background:#fff;color:#497f82;border:1px solid #d3e4e7;border-radius:8px;
+ padding:11px;font-size:11px;font-weight:700}
+.mri-overlay-toggle[aria-pressed="true"]{background:#e6f3ef;color:#2c7f72;border-color:#8cc8bd}
+.mri-plane--primary .mri-frame{height:min(68vh,640px);max-height:none}
+.mri-plane--secondary .mri-frame{height:245px}
+.mri-plane-title strong{font-size:13.5px}
+.mri-corner{color:#9ebbc6;font-size:10px}
+.mri-zoom-tools button{width:38px;height:38px}
+.mri-fallback-message{font-size:11px;color:#946d47;padding:10px 16px;background:#fff5e7}
+.clinical-lab{scroll-margin-top:96px}
+.clinical-searchbar input,.index-search input{font-size:13px}
+.clinical-entry-name strong{font-size:12.5px}
+.clinical-entry-name small{font-size:11px}
+.clinical-record h3{font-size:23px}
+.clinical-record-body p,.clinical-record-body li{font-size:12.5px}
+.clinical-caution p{font-size:11.5px}
+.clinical-citations a{font-size:12px}
+.clinical-groupbar button{font-size:11px}
+.method-alert{font-size:11.5px;line-height:1.65}
+.reference-list strong{font-size:12px}
+.reference-list small,.methods-copy p{font-size:11.5px}
+@media(max-width:1200px){
+ .content{padding:27px 23px}
+ .atlas-mode-tabs button{padding:12px 10px}
+ .atlas-mode-tabs button span{font-size:11px}
+ .atlas-provenance{align-items:flex-start}
+ .deep-canvas{height:470px}
+ .spine-canvas{height:555px}
+ .mri-plane--primary .mri-frame{height:560px}
+ .mri-plane--secondary .mri-frame{height:210px}
+}
+@media(max-width:920px){
+ .content{padding:22px}
+ .rail{width:260px}
+ .atlas-mode-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .atlas-mode-tabs button{min-height:73px}
+ .atlas-provenance{flex-wrap:wrap}
+ .atlas-provenance>a{margin-left:54px}
+ .source-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ .page-header{padding:22px 20px 18px}
+ .page-header h1{font-size:31px}
+ .page-header>p{font-size:13px}
+ .source-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .mri-plane--primary .mri-frame{height:min(71vh,580px)}
+ .mri-plane--secondary .mri-frame{height:210px}
+ .spine-canvas{height:550px}
+ .deep-canvas{height:490px}
+ .atlas-provenance>a{margin-left:0}
+}
+@media(max-width:540px){
+ .content{padding:15px 11px 32px}
+ .topbar{height:60px}
+ .page-header{padding:18px 15px 15px}
+ .page-header h1{font-size:27px;letter-spacing:-.7px}
+ .page-header>p{font-size:12px}
+ .source-metrics{gap:7px;margin-top:17px}
+ .source-metrics div{padding:10px;gap:4px;min-height:66px}
+ .source-metrics strong{font-size:15px}
+ .source-metrics span{font-size:9px;letter-spacing:.3px}
+ .explorer-top{margin-top:23px}
+ .explorer-top h2,.panel-heading h2{font-size:18px}
+ .atlas-mode-tabs{gap:7px}
+ .atlas-mode-tabs button{padding:12px 10px;grid-template-columns:23px 1fr;
+   grid-template-rows:auto auto;column-gap:8px;min-height:75px}
+ .atlas-mode-tabs button svg{grid-row:1/3;grid-column:1}
+ .atlas-mode-tabs button span{grid-column:2;font-size:11px}
+ .atlas-mode-tabs button small{grid-column:2;font-size:9px}
+ .atlas-provenance{padding:12px;gap:10px}
+ .atlas-provenance-icon{height:34px;width:34px}
+ .atlas-provenance-copy{flex-basis:calc(100% - 50px)}
+ .atlas-provenance-header span{font-size:9px}
+ .atlas-provenance-header strong{font-size:11px}
+ .atlas-provenance p{font-size:11px}
+ .atlas-provenance small{font-size:10px}
+ .atlas-provenance>a{width:100%;justify-content:center;font-size:10.5px}
+ .canvas-shell{height:450px;min-height:450px}
+ .deep-canvas{height:465px}
+ .spine-canvas{height:490px}
+ .mri-academic-bar{padding:12px 10px;gap:8px}
+ .mri-academic-bar>div:first-child{flex-basis:100%}
+ .mri-quality-picker{flex:1;justify-content:center}
+ .mri-quality-picker button{font-size:10.5px;padding:10px 8px}
+ .mri-overlay-toggle,.mri-reset{font-size:10px;min-height:41px;padding:9px}
+ .mri-plane--primary .mri-frame{height:min(68vh,525px)}
+ .mri-plane--secondary .mri-frame{height:190px}
+ .mri-view-toolbar{gap:9px}
+ .mri-plane-picker{width:100%;justify-content:space-around}
+ .clinical-record-body p,.clinical-record-body li{font-size:12px}
+ .spine-right>p:not(.spine-subtitle){font-size:12px}
+ .stage-settings{padding:13px}
+ .setting-line>span,.setting-line>label{font-size:10px}
+ .orientation-row button{font-size:10px;min-height:40px}
+}
+@media(pointer:coarse){
+ .atlas-mode-tabs button,.atlas-provenance>a,.mri-academic-bar button,.clinical-groupbar button{min-height:44px}
+ .deep-controls button,.mri-zoom-tools button{min-height:41px}
+}
+
