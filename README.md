@@ -141,3 +141,8 @@ La interfaz ofrece: panel explícito de procedencia científica para cada modali
 
 Fuentes y transformaciones se especifican en DATA_SOURCES.md, y el trabajo restante se enumera en ROADMAP.md. La reconstrucción digital sigue siendo una interpretación geométrica de datos anatómicos, no una fotografía, ni una adquisición clínica de un individuo. La biblioteca neuropsicológica es material académico, no un sistema diagnóstico.
 
+
+
+## v7 · Neuropsicología clínica como eje principal
+
+La interfaz comienza ahora con la biblioteca clínica, organizada por dominios cognitivos, síndromes y evaluación; incluye cuatro casos ficticios de práctica de formulación de hipótesis, diagnósticos diferenciales y plan de evaluación. El atlas cortical, los modelos profundos, la RM MNI152 y la médula HRA funcionan como **correlatos anatómicos de apoyo**. Desde las fichas se puede navegar al modelo, pero una localización no demuestra una etiología ni un diagnóstico. Los ejemplos clínicos no representan pacientes reales. Las rutas `?vista=rm`, `?vista=internas` y `?vista=medula` conservan acceso directo al atlas.
