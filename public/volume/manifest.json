@@ -1,0 +1,294 @@
+{
+  "template": "MNI152NLin2009cAsym",
+  "voxelDimensions": [
+    97,
+    115,
+    97
+  ],
+  "spacingMm": [
+    2,
+    2,
+    2
+  ],
+  "rasAffine": [
+    [
+      2.0,
+      0.0,
+      0.0,
+      -96.5
+    ],
+    [
+      0.0,
+      2.0,
+      0.0,
+      -132.5
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -78.5
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "voxelIndexOrder": "x + 97*(y + 115*z)",
+  "anatomicalGeometry": "FreeSurfer-aseg dseg 1 mm template transformed by template MNI affine; NOT fsaverage5 surfaces",
+  "structures": [
+    {
+      "id": "hippocampus-left",
+      "name": "Hipocampo izquierdo",
+      "labels": [
+        17
+      ],
+      "color": "#c1a1d6",
+      "role": "Memoria episódica y espacial",
+      "category": "hipocampo",
+      "file": "hippocampus-left.bin",
+      "vertices": 3856,
+      "faces": 7708,
+      "voxelCount": 5786
+    },
+    {
+      "id": "hippocampus-right",
+      "name": "Hipocampo derecho",
+      "labels": [
+        53
+      ],
+      "color": "#d1b6e5",
+      "role": "Memoria episódica y espacial",
+      "category": "hipocampo",
+      "file": "hippocampus-right.bin",
+      "vertices": 3880,
+      "faces": 7756,
+      "voxelCount": 5908
+    },
+    {
+      "id": "amygdala-left",
+      "name": "Amígdala izquierda",
+      "labels": [
+        18
+      ],
+      "color": "#df9b9b",
+      "role": "Saliencia y aprendizaje afectivo",
+      "category": "amigdala",
+      "file": "amygdala-left.bin",
+      "vertices": 1472,
+      "faces": 2940,
+      "voxelCount": 2218
+    },
+    {
+      "id": "amygdala-right",
+      "name": "Amígdala derecha",
+      "labels": [
+        54
+      ],
+      "color": "#edbbbb",
+      "role": "Saliencia y aprendizaje afectivo",
+      "category": "amigdala",
+      "file": "amygdala-right.bin",
+      "vertices": 1518,
+      "faces": 3032,
+      "voxelCount": 2463
+    },
+    {
+      "id": "thalamus-left",
+      "name": "Tálamo izquierdo",
+      "labels": [
+        10
+      ],
+      "color": "#b3b9e5",
+      "role": "Relés e integración talamocortical",
+      "category": "talamo",
+      "file": "thalamus-left.bin",
+      "vertices": 4246,
+      "faces": 8488,
+      "voxelCount": 11629
+    },
+    {
+      "id": "thalamus-right",
+      "name": "Tálamo derecho",
+      "labels": [
+        49
+      ],
+      "color": "#cad0ee",
+      "role": "Relés e integración talamocortical",
+      "category": "talamo",
+      "file": "thalamus-right.bin",
+      "vertices": 4094,
+      "faces": 8184,
+      "voxelCount": 11151
+    },
+    {
+      "id": "caudate-left",
+      "name": "Núcleo caudado izquierdo",
+      "labels": [
+        11
+      ],
+      "color": "#85c9bb",
+      "role": "Circuitos frontoestriatales",
+      "category": "caudado",
+      "file": "caudate-left.bin",
+      "vertices": 3314,
+      "faces": 6624,
+      "voxelCount": 4971
+    },
+    {
+      "id": "caudate-right",
+      "name": "Núcleo caudado derecho",
+      "labels": [
+        50
+      ],
+      "color": "#a2d9cd",
+      "role": "Circuitos frontoestriatales",
+      "category": "caudado",
+      "file": "caudate-right.bin",
+      "vertices": 3356,
+      "faces": 6708,
+      "voxelCount": 5143
+    },
+    {
+      "id": "putamen-left",
+      "name": "Putamen izquierdo",
+      "labels": [
+        12
+      ],
+      "color": "#e5ae7b",
+      "role": "Control motor y aprendizaje de hábitos",
+      "category": "putamen",
+      "file": "putamen-left.bin",
+      "vertices": 3680,
+      "faces": 7356,
+      "voxelCount": 6817
+    },
+    {
+      "id": "putamen-right",
+      "name": "Putamen derecho",
+      "labels": [
+        51
+      ],
+      "color": "#f1c6a0",
+      "role": "Control motor y aprendizaje de hábitos",
+      "category": "putamen",
+      "file": "putamen-right.bin",
+      "vertices": 3614,
+      "faces": 7224,
+      "voxelCount": 6764
+    },
+    {
+      "id": "pallidum-left",
+      "name": "Globo pálido izquierdo",
+      "labels": [
+        13
+      ],
+      "color": "#e7d38f",
+      "role": "Circuitos motores de ganglios basales",
+      "category": "palido",
+      "file": "pallidum-left.bin",
+      "vertices": 1692,
+      "faces": 3380,
+      "voxelCount": 2586
+    },
+    {
+      "id": "pallidum-right",
+      "name": "Globo pálido derecho",
+      "labels": [
+        52
+      ],
+      "color": "#f3e3a5",
+      "role": "Circuitos motores de ganglios basales",
+      "category": "palido",
+      "file": "pallidum-right.bin",
+      "vertices": 1622,
+      "faces": 3240,
+      "voxelCount": 2489
+    },
+    {
+      "id": "brainstem",
+      "name": "Tronco encefálico",
+      "labels": [
+        16
+      ],
+      "color": "#99c5dd",
+      "role": "Vías de paso y núcleos vitales",
+      "category": "tronco",
+      "file": "brainstem.bin",
+      "vertices": 9910,
+      "faces": 19816,
+      "voxelCount": 31051
+    },
+    {
+      "id": "cerebellum-left",
+      "name": "Cerebelo izquierdo, corteza",
+      "labels": [
+        8
+      ],
+      "color": "#acbea0",
+      "role": "Coordinación y aprendizaje motor",
+      "category": "cerebelo",
+      "file": "cerebellum-left.bin",
+      "vertices": 6089,
+      "faces": 12178,
+      "voxelCount": 76758
+    },
+    {
+      "id": "cerebellum-right",
+      "name": "Cerebelo derecho, corteza",
+      "labels": [
+        47
+      ],
+      "color": "#c3d4b8",
+      "role": "Coordinación y aprendizaje motor",
+      "category": "cerebelo",
+      "file": "cerebellum-right.bin",
+      "vertices": 5922,
+      "faces": 11836,
+      "voxelCount": 78501
+    },
+    {
+      "id": "corpus-callosum",
+      "name": "Cuerpo calloso",
+      "labels": [
+        251,
+        252,
+        253,
+        254,
+        255
+      ],
+      "color": "#e7cb9e",
+      "role": "Conectividad interhemisférica",
+      "category": "calloso",
+      "file": "corpus-callosum.bin",
+      "vertices": 3562,
+      "faces": 7120,
+      "voxelCount": 4600
+    },
+    {
+      "id": "ventricles",
+      "name": "Ventrículos laterales",
+      "labels": [
+        4,
+        43
+      ],
+      "color": "#7bc3d6",
+      "role": "Sistema ventricular, líquido cefalorraquídeo",
+      "category": "ventriculos",
+      "file": "ventricles.bin",
+      "vertices": 13474,
+      "faces": 26944,
+      "voxelCount": 18257
+    }
+  ],
+  "sourceT1": "https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-02_T1w.nii.gz",
+  "sourceAseg": "https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-02_seg-aseg_dseg.nii.gz",
+  "sourceAsegHigh": "https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_seg-aseg_dseg.nii.gz",
+  "sha256": {
+    "t1_2mm.nii.gz": "7c4e551ae8150ac1f468595bd62074aa15aed747cd334fce6d177182972b6220",
+    "aseg_2mm.nii.gz": "9d65771138c0be317183e546dff6b9d36cf774c3fa84be7be114a90272408108",
+    "aseg_1mm.nii.gz": "0bb033414fbbd6df626d063b73801a14c71fb33b83204585f2aa1fbb4aef60dd"
+  }
+}
