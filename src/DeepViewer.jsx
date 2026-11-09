@@ -11,10 +11,26 @@ const CACHE=new Map();
 let T1_VOLUME_PROMISE=null;
 function loadT1Volume(){
  if(!T1_VOLUME_PROMISE){
-  T1_VOLUME_PROMISE=fetch(BASE+'mni152_t1.bin').then(r=>{
-   if(!r.ok)throw Error('No se encontró la resonancia T1');
-   return r.arrayBuffer();
-  }).catch(e=>{T1_VOLUME_PROMISE=null;throw e});
+  T1_VOLUME_PROMISE=(async()=>{
+   try{
+    if(typeof DecompressionStream==='undefined')throw Error('Sin descompresión de gzip');
+    const response=await fetch(BASE+'mni152_t1_1mm.navl.gz');
+    if(!response.ok)throw Error('No se encontró la plantilla de 1 mm');
+    const stream=new Blob([await response.arrayBuffer()]).stream()
+      .pipeThrough(new DecompressionStream('gzip'));
+    const buffer=await new Response(stream).arrayBuffer();
+    const header=new DataView(buffer);
+    if(String.fromCharCode(...new Uint8Array(buffer,0,4))!=='NAVL'||
+       header.getUint16(4,true)!==193||
+       header.getUint16(6,true)!==229||
+       header.getUint16(8,true)!==193)throw Error('Volumen T1 de 1 mm inválido');
+    return {buffer,spacing:1};
+   }catch(e){
+    const response=await fetch(BASE+'mni152_t1.bin');
+    if(!response.ok)throw Error('No se encontró una resonancia T1 de referencia');
+    return {buffer:await response.arrayBuffer(),spacing:2};
+   }
+  })().catch(e=>{T1_VOLUME_PROMISE=null;throw e});
  }
  return T1_VOLUME_PROMISE;
 }
@@ -77,38 +93,40 @@ function CorticalContext({file,hemi}){
  </mesh>;
 }
 // This mid-sagittal MRI plane and the labelled 3D nuclei share the SAME MNI affine.
-function MriSagittalPlane({slice}){
+function MriSagittalPlane({sliceMm}){
  const [texture,setTexture]=useState(null);
  useEffect(()=>{
-  let live=true;let tex=null;
-  loadT1Volume().then(buffer=>{
+  let live=true,tex=null;
+  loadT1Volume().then(({buffer,spacing})=>{
    if(!live)return;
    const header=new DataView(buffer);
-   if(String.fromCharCode(...new Uint8Array(buffer,0,4))!=='NAVL')throw Error('Imagen T1 inválida');
+   if(String.fromCharCode(...new Uint8Array(buffer,0,4))!=='NAVL')
+     throw Error('Volumen T1 inválido');
    const nx=header.getUint16(4,true),ny=header.getUint16(6,true),nz=header.getUint16(8,true);
-   if(nx!==97||ny!==115||nz!==97)throw Error('Dimensiones MNI incorrectas');
+   const origin=spacing===1?-96:-96.5;
+   const index=Math.max(0,Math.min(nx-1,Math.round((sliceMm-origin)/spacing)));
    const voxels=new Uint8Array(buffer.slice(10));
    const rgba=new Uint8Array(ny*nz*4);
    for(let z=0;z<nz;z++)for(let y=0;y<ny;y++){
-     const gray=voxels[slice+nx*(y+ny*z)],off=(y+ny*z)*4;
-     rgba[off]=gray;rgba[off+1]=gray;rgba[off+2]=gray;rgba[off+3]=255;
+    const gray=voxels[index+nx*(y+ny*z)],off=(y+ny*z)*4;
+    rgba[off]=gray;rgba[off+1]=gray;rgba[off+2]=gray;rgba[off+3]=255;
    }
    tex=new THREE.DataTexture(rgba,ny,nz,THREE.RGBAFormat,THREE.UnsignedByteType);
    tex.colorSpace=THREE.SRGBColorSpace;
-   tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;tex.flipY=false;
-   tex.needsUpdate=true;
+   tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
+   tex.flipY=false;tex.needsUpdate=true;
    setTexture(tex);
   }).catch(console.error);
   return()=>{live=false;tex?.dispose()};
- },[slice]);
+ },[sliceMm]);
  if(!texture)return null;
- // MNI affine at 2mm: R = 2*i-96.5, A=2*j-132.5, S=2*k-78.5.
- // NeuroAtlas scene mapping x=R/72, y=(S-18)/72, z=(A+18)/72.
- const x=(slice*2-96.5)/72;
- return <mesh rotation={[0,-Math.PI/2,0]} position={[x,-.0069444,-.0069444]} renderOrder={5}>
-   <planeGeometry args={[228/72,192/72]}/>
-   <meshBasicMaterial map={texture} side={THREE.DoubleSide} transparent
-      opacity={.95} depthWrite={false} toneMapped={false}/>
+ // MNI152 1mm RAS affine x=index-96, y=index-132, z=index-78.
+ // The 3D nuclei share the MNI coordinate transformation used in build_volume.py:
+ // scene x=R/72, scene y=(S-18)/72, scene z=(A+18)/72.
+ return <mesh rotation={[0,-Math.PI/2,0]} position={[sliceMm/72,0,0]} renderOrder={5}>
+  <planeGeometry args={[228/72,192/72]}/>
+  <meshBasicMaterial map={texture} side={THREE.DoubleSide} transparent
+    opacity={.97} depthWrite={false} toneMapped={false}/>
  </mesh>;
 }
 
@@ -130,7 +148,7 @@ export function DeepViewer({selected,onSelect}){
  const [isolated,setIsolated]=useState(false);
  const [showContext,setShowContext]=useState(false);
  const [showMRI,setShowMRI]=useState(true);
- const [mriSlice,setMriSlice]=useState(48);
+ const [mriSliceMm,setMriSliceMm]=useState(0);
  const [spin,setSpin]=useState(false);
  const [opacity,setOpacity]=useState(100);
  const [reset,setReset]=useState(0);
@@ -186,7 +204,7 @@ export function DeepViewer({selected,onSelect}){
        <directionalLight position={[-3,1,-4]} intensity={.42} color="#b3d6e6"/>
        {showContext&&!isolated&&(manifest?.contextSurfaces||[]).map(s=>
          <CorticalContext key={s.file} file={s.file} hemi={s.hemisphere}/>)}
-       {showMRI&&!isolated&&<MriSagittalPlane slice={mriSlice}/>}
+       {showMRI&&!isolated&&<MriSagittalPlane sliceMm={mriSliceMm}/>}
        {visible.map(s=><Structure key={s.id} region={s} chosen={s.id===chosen?.id}
            isolated={isolated} groupOpacity={(opacity/100)*(focus==='all' ? .4 : .85)} onSelect={changeSelection}/>)}
        <OrbitControls makeDefault enableDamping dampingFactor={.09} enablePan
@@ -197,8 +215,8 @@ export function DeepViewer({selected,onSelect}){
     </div>
     {showMRI&&!isolated&&<div className="deep-mri-slice">
       <label htmlFor="deep-mri-index">POSICIÓN DEL CORTE SAGITAL</label>
-      <input id="deep-mri-index" type="range" min="20" max="77" step="1" value={mriSlice} onChange={e=>setMriSlice(+e.target.value)}/>
-      <strong>{(mriSlice*2-96.5).toFixed(1)} mm RAS</strong>
+      <input id="deep-mri-index" type="range" min="-70" max="70" step="1" value={mriSliceMm} onChange={e=>setMriSliceMm(+e.target.value)}/>
+      <strong>{mriSliceMm.toFixed(1)} mm RAS</strong>
     </div>}
     <div className="deep-opacity"><span>Opacidad de las estructuras secundarias</span><input aria-label="Opacidad de estructuras" type="range" min="40" max="100" value={opacity} onChange={e=>setOpacity(+e.target.value)}/><strong>{opacity}%</strong></div>
    </div>
