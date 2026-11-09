@@ -63,3 +63,13 @@ La envolvente contextual MNI se deriva de aseg 1 mm con etiquetas de corteza y s
 
 ### Correlación de la estructura profunda con una RM real de referencia
 La vista de anatomía profunda permite mostrar un plano sagital T1 real de la misma plantilla MNI152 sobre el modelo 3D de la estructura seleccionada. El plano recorre el eje RAS de izquierda a derecha y puede desplazarse manualmente; se contrasta con la estructura sin deformarla. De manera alternativa es posible ocultar el corte, mostrar una silueta cortical derivada de aseg o ampliar la pieza uniformemente. La opción de corte T1 es **una imagen de plantilla promedio**, no neuroimagen individual de pacientes.
+
+## Anatomía espinal HRA, 30 segmentos (v5)
+
+- Fuente original: https://ccf-ontology.hubmapconsortium.org/objects/v1.2/VH_M_Spinal_Cord.glb
+- Autoría / atribución: HuBMAP Human Reference Atlas, 3D Reference Object Library, derivado del National Library of Medicine Visible Human Male Project.
+- Licencia: Creative Commons Attribution 4.0 International (CC BY 4.0), documentación en https://docs.hubmapconsortium.org/faq.html y https://humanatlas.io/3d-reference-library.
+- Hash SHA256: a7858d88c2237aa7d559c4c1d638923d213d2a9f46c575dea03d6ba67a9975c0; tamaño 489992 bytes.
+- Contenido: mallas independientes de segmentos cervicales C1-C8, torácicos T1-T12, lumbares L1-L5 y sacros S1-S5.
+- No incluyen raíces, nervios craneales, plexos, tractos internos ni datos de un paciente. Nivel medular y nivel vertebral no son equivalentes.
+- Descarga reproducible: scripts/fetch_spine.py. Publicación automatizada: .github/workflows/prepare-spine.yml.

@@ -1,0 +1,38 @@
+name: Prepare licensed HRA spinal cord anatomy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-spine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download, pin and verify licensed HRA spinal model
+        run: python scripts/fetch_spine.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Validate anatomical asset and other module tests
+        run: npm test
+      - name: Commit verified open anatomical data
+        run: |
+          git config user.name 'NeuroAtlas Anatomy Pipeline'
+          git config user.email 'neuroatlas-bot@users.noreply.github.com'
+          git add public/spine
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: publish CC BY 4.0 Human Reference Atlas spinal segments'
+            git push origin HEAD:main
+          fi
+

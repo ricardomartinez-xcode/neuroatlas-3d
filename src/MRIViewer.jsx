@@ -1,5 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {Layers3,ScanLine,Info,Eye,EyeOff,RotateCcw} from 'lucide-react';
+import {Layers3,ScanLine,Info,Eye,EyeOff,RotateCcw,Maximize2,ZoomIn,ZoomOut,MonitorSmartphone} from 'lucide-react';
 
 const BASE=import.meta.env.BASE_URL+'volume/';
 const TITLES={
@@ -38,7 +38,10 @@ function mapCross(axis,c){
  if(axis==='coronal')return [96-c.x,96-c.z];
  return [114-c.y,96-c.z];
 }
-function Plane({axis,title,coord,setCoord,mri,seg,showLabels,selectedCategory}){
+function Plane({axis,title,coord,setCoord,mri,seg,showLabels,selectedCategory,primary,onPromote}){
+ const [zoom,setZoom]=useState(1);
+ const [pan,setPan]=useState({x:0,y:0});
+ const viewRef=useRef(null),pointer=useRef(null);
  const canvas=useRef(null),dims=viewDims(axis),[w,h]=dims,field=TITLES[axis];
  useEffect(()=>{
   const ctx=canvas.current?.getContext('2d',{willReadFrequently:true});
@@ -70,15 +73,45 @@ function Plane({axis,title,coord,setCoord,mri,seg,showLabels,selectedCategory}){
  const label=(mm>=0?'+':'')+mm.toFixed(1)+' mm';
  const choose=evt=>{
   const rect=canvas.current.getBoundingClientRect();
-  const px=Math.max(0,Math.min(w-1,Math.floor((evt.clientX-rect.left)*w/rect.width)));
-  const py=Math.max(0,Math.min(h-1,Math.floor((evt.clientY-rect.top)*h/rect.height)));
+  // Account for contain letterboxing (preserve anatomical aspect ratio).
+  const scale=Math.min(rect.width/w,rect.height/h);
+  const visualWidth=w*scale,visualHeight=h*scale;
+  const left=rect.left+(rect.width-visualWidth)/2,top=rect.top+(rect.height-visualHeight)/2;
+  if(evt.clientX<left||evt.clientX>left+visualWidth||evt.clientY<top||evt.clientY>top+visualHeight)return;
+  const px=Math.max(0,Math.min(w-1,Math.floor((evt.clientX-left)/visualWidth*w)));
+  const py=Math.max(0,Math.min(h-1,Math.floor((evt.clientY-top)/visualHeight*h)));
   const [x,y,z]=mapVoxel(axis,px,py,coord);
   setCoord({x,y,z});
  };
- return <article className="mri-plane">
-   <div className="mri-plane-title"><div><strong>{title}</strong><small>{field.plane}</small></div><span>{label}</span></div>
-   <div className="mri-frame"><span className="mri-corner">MNI152 · T1</span><canvas ref={canvas} width={w} height={h}
-    onPointerDown={choose} aria-label={'Corte de resonancia '+title} role="img" title="Toca para cambiar las coordenadas de los tres cortes"/><div className="mri-frame-foot"><span>{axis==='sagittal'?'A':'R'}</span><span>{axis==='sagittal'?'P':'L'}</span></div></div>
+ const down=e=>{pointer.current={x:e.clientX,y:e.clientY,pan:{...pan},drag:false};e.currentTarget.setPointerCapture?.(e.pointerId);};
+ const move=e=>{
+   const p=pointer.current;if(!p||zoom<=1)return;
+   const dx=e.clientX-p.x,dy=e.clientY-p.y;
+   if(Math.abs(dx)+Math.abs(dy)>4)p.drag=true;
+   setPan({x:p.pan.x+dx,y:p.pan.y+dy});
+ };
+ const up=e=>{const wasDragging=pointer.current?.drag;pointer.current=null;if(!wasDragging)choose(e);};
+ const updateZoom=value=>{const next=Math.min(4,Math.max(1,value));setZoom(next);if(next===1)setPan({x:0,y:0});};
+ const full=()=>{
+   const target=viewRef.current;
+   if(document.fullscreenElement)document.exitFullscreen?.();
+   else target?.requestFullscreen?.().catch(()=>{});
+ };
+ return <article ref={viewRef} className={'mri-plane '+(primary?'mri-plane--primary':'mri-plane--secondary')}>
+   <div className="mri-plane-title"><div><strong>{title}</strong><small>{field.plane}</small></div><span>{label}</span>
+     {!primary&&<button className="mri-promote" onClick={()=>onPromote(axis)}>Ampliar esta vista</button>}
+     {primary&&<button className="mri-expand" onClick={full} title="Pantalla completa"><Maximize2 size={16}/><span>Pantalla completa</span></button>}
+   </div>
+   <div className="mri-frame">
+     <span className="mri-corner">MNI152 · T1 · REFERENCIA ANATÓMICA</span>
+     <canvas ref={canvas} width={w} height={h} onPointerDown={down} onPointerMove={move}
+      onPointerUp={up} onPointerCancel={()=>{pointer.current=null;}}
+      onWheel={e=>{e.preventDefault();updateZoom(zoom+(e.deltaY>0?-.2:.2));}}
+      style={{transform:'translate('+pan.x+'px,'+pan.y+'px) scale('+zoom+')'}}
+      aria-label={'Corte de resonancia '+title} role="img" title="Toca para localizar · arrastra para desplazar con zoom"/>
+     <div className="mri-frame-foot"><span>{axis==='sagittal'?'A':'R'}</span><span>{axis==='sagittal'?'P':'L'}</span></div>
+     {primary&&<div className="mri-zoom-tools"><button onClick={()=>updateZoom(zoom-.25)} aria-label="Alejar resonancia"><ZoomOut size={17}/></button><span>{Math.round(zoom*100)}%</span><button onClick={()=>updateZoom(zoom+.25)} aria-label="Acercar resonancia"><ZoomIn size={17}/></button><button onClick={()=>{setZoom(1);setPan({x:0,y:0});}} aria-label="Restablecer zoom"><RotateCcw size={16}/></button></div>}
+   </div>
    <div className="mri-slider"><span>NIVEL</span><input aria-label={'Mover corte '+title} type="range" min="0" max={field.range} value={slice} onChange={e=>setCoord({...coord,[field.axis]:Number(e.target.value)})}/><strong>{slice+1}/{field.range+1}</strong></div>
  </article>;
 }
@@ -86,6 +119,7 @@ export default function MRIViewer({selectedDeep}){
  const [mri,setMri]=useState(null),[seg,setSeg]=useState(null),[error,setError]=useState('');
  const [coord,setCoord]=useState({x:48,y:57,z:49});
  const [showLabels,setShowLabels]=useState(true);
+ const [activePlane,setActivePlane]=useState('sagittal');
  useEffect(()=>{
   const abort=new AbortController();
   Promise.all(['mni152_t1.bin','mni152_aseg.bin'].map(name=>fetch(BASE+name,{signal:abort.signal}).then(r=>{if(!r.ok)throw Error('No se pudo cargar el volumen de resonancia');return r.arrayBuffer()}).then(parseNavl)))
@@ -102,10 +136,17 @@ export default function MRIViewer({selectedDeep}){
     <button aria-pressed={showLabels} onClick={()=>setShowLabels(v=>!v)}>{showLabels?<Eye size={16}/>:<EyeOff size={16}/>} {showLabels?'Ocultar etiquetas':'Mostrar etiquetas'}</button>
     <button onClick={()=>setCoord({x:48,y:57,z:49})}><RotateCcw size={16}/> Centrar cortes</button>
    </div>
-   {mri&&seg?<div className="mri-planes">
-      <Plane axis="sagittal" title="Sagital" coord={coord} setCoord={setCoord} mri={mri} seg={seg} showLabels={showLabels} selectedCategory={category}/>
-      <Plane axis="coronal" title="Coronal" coord={coord} setCoord={setCoord} mri={mri} seg={seg} showLabels={showLabels} selectedCategory={category}/>
-      <Plane axis="axial" title="Axial" coord={coord} setCoord={setCoord} mri={mri} seg={seg} showLabels={showLabels} selectedCategory={category}/>
+   <div className="mri-view-toolbar" role="group" aria-label="Seleccionar plano principal de resonancia">
+     <div><MonitorSmartphone size={17}/><strong>VISOR ANATÓMICO AMPLIADO</strong><span>Elige el plano principal para estudiarlo con detalle</span></div>
+     <div className="mri-plane-picker">{['sagittal','coronal','axial'].map(axis=><button key={axis}
+       onClick={()=>setActivePlane(axis)} aria-pressed={activePlane===axis}
+       className={activePlane===axis?'active':''}>{TITLES[axis].name}</button>)}</div>
+   </div>
+   {mri&&seg?<div className="mri-planes mri-planes--focused">
+      {[activePlane,...['sagittal','coronal','axial'].filter(axis=>axis!==activePlane)].map((axis,i)=>
+        <Plane key={axis} axis={axis} title={TITLES[axis].name} coord={coord} setCoord={setCoord}
+          mri={mri} seg={seg} primary={i===0} onPromote={setActivePlane}
+          showLabels={showLabels} selectedCategory={category}/>)}
     </div>:<div className="mri-loading" role="status">{error||'Cargando volumen anatómico T1 y parcelación…'}</div>}
    <div className="mri-coordinate"><strong>Coordenadas anatómicas de plantilla (RAS, mm)</strong><div>
      <span>R-L <b>{(coord.x*2-96.5).toFixed(1)}</b></span>

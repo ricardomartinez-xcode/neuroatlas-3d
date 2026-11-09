@@ -124,3 +124,11 @@ La malla fsaverage6 está disponible en https://osf.io/jzxyr/ (vía Nilearn, sum
 
 ### Correlación de la estructura profunda con una RM real de referencia
 La vista de anatomía profunda permite mostrar un plano sagital T1 real de la misma plantilla MNI152 sobre el modelo 3D de la estructura seleccionada. El plano recorre el eje RAS de izquierda a derecha y puede desplazarse manualmente; se contrasta con la estructura sin deformarla. De manera alternativa es posible ocultar el corte, mostrar una silueta cortical derivada de aseg o ampliar la pieza uniformemente. La opción de corte T1 es **una imagen de plantilla promedio**, no neuroimagen individual de pacientes.
+
+## v5 · RM ampliada, neuropsicología clínica y médula HRA
+
+- Visor de resonancia T1: plano principal ampliado con zoom, paneo, pantalla completa, dos planos secundarios y controles de ubicación.
+- Biblioteca clínica académica: búsqueda por síndrome, estructura, síntoma o dominio y fichas de anatomía, función, enfermedades relacionadas, evaluación y fuentes.
+- Médula 3D con 30 segmentos auténticos C1-S5 de Human Reference Atlas / National Library of Medicine, CC BY 4.0. Fuente, licencia y SHA256 en DATA_SOURCES.md; workflow prepare-spine.yml y scripts/fetch_spine.py.
+- Faltan modelos auténticos de raíces, nervios periféricos y tractos medulares. No se sustituirán por geometría sintética que aparente tener validación anatómica.
+- El plan maestro de implementación está en ROADMAP.md y las instrucciones para Codex están en AGENTS.md.
