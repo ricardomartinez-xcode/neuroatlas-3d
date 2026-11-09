@@ -518,3 +518,110 @@ button:disabled{cursor:not-allowed}
  .deep-controls button,.mri-zoom-tools button{min-height:41px}
 }
 
+
+
+/* v7 · Prioridad: neuropsicología clínica. El atlas anatómico es material de apoyo. */
+.rail{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#7a9fa180 transparent}
+.rail-second{margin-top:20px}.rail-link{min-height:43px;white-space:normal;line-height:1.35}
+.rail-link.active{background:#2c716e;color:#fff}.rail-link.anatomy-active{background:#234c5a;color:#daeeee}
+.rail-grow{min-height:8px}.rail-note{flex-shrink:0;margin-top:14px}.rail-note-kicker{margin-bottom:8px}
+.top-path strong{color:#2a6669}
+.page-header{scroll-margin-top:90px;padding-bottom:22px}
+.page-header h1{max-width:840px}
+.page-header>p{font-size:13px;line-height:1.7;max-width:920px}
+.neuro-metrics{margin:20px 0 12px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.neuro-metrics div{padding:12px;background:#f8fdfb}
+.hero-pathways{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:17px}
+.hero-pathways button{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ padding:12px 14px;background:#fff;border:1px solid #cddfe0;color:#3e7880;
+ border-radius:9px;font-size:11px;font-weight:800;min-height:44px}
+.hero-pathways .hero-pathway-primary{background:#256f6b;border-color:#256f6b;color:white}
+.hero-pathways button:hover{filter:brightness(.965)}
+#clinica{margin-top:18px;scroll-margin-top:85px;box-shadow:0 8px 26px #153b4b0b}
+#clinica .panel-heading h2{font-size:22px}
+#clinica .section-intro{font-size:12px;max-width:1000px}
+#clinica .clinical-workspace{grid-template-columns:minmax(220px,.87fr) minmax(0,1.6fr)}
+#clinica .clinical-index button{min-height:61px}
+#clinica .clinical-index button.selected{border-left:3px solid #358c84;background:#e8f6f1}
+#clinica .clinical-record-body p{font-size:12px}
+#clinica .clinical-record-body li{font-size:12px}
+#clinica .clinical-record-tabs button{font-size:11px}
+.case-lab{background:#fff;border:1px solid #dbe7e9;border-radius:14px;
+ padding:24px;margin:22px 0 29px;scroll-margin-top:85px;box-shadow:0 5px 19px #113b4c08}
+.case-lab .section-intro{font-size:12px;max-width:950px}
+.case-workspace{display:grid;grid-template-columns:minmax(190px,.7fr) minmax(0,1.55fr);gap:14px}
+.case-select{display:flex;flex-direction:column;gap:8px;align-self:start}
+.case-select button{border:1px solid #dfe9ec;border-radius:10px;background:#f9fbfb;
+ display:grid;grid-template-columns:minmax(0,1fr) 16px;gap:5px;text-align:left;
+ padding:14px;min-height:91px;color:#416a74}
+.case-select button>span,.case-select button>strong,.case-select button>small{grid-column:1}
+.case-select button>span{font-size:9px;letter-spacing:1.1px;font-weight:800;color:#67989e}
+.case-select button>strong{font:800 12px/1.4 Manrope,sans-serif}
+.case-select button>small{font-size:10px;color:#8096a1}
+.case-select button>svg{grid-column:2;grid-row:2;color:#94adaf}
+.case-select button.selected{background:#e5f4f0;border-color:#8ac6b7}
+.case-select button.selected strong{color:#2a8179}
+.case-paper{border:1px solid #dce8e9;border-radius:10px;min-width:0;overflow:hidden}
+.case-paper-top{background:linear-gradient(108deg,#e9f6f2,#f7fbfa);padding:20px;
+ display:flex;justify-content:space-between;gap:12px;color:#478a87}
+.case-label{font-size:9px;font-weight:800;letter-spacing:1px}
+.case-paper-top h3{font:800 21px/1.3 Manrope,sans-serif;letter-spacing:-.4px;
+ color:#294d5a;margin:10px 0 4px}
+.case-paper-top p{font-size:11px;color:#88a1a6;margin:0}
+.case-purpose{border-bottom:1px solid #e4eced;padding:15px 20px;display:flex;gap:11px;color:#3e8a83}
+.case-purpose svg{flex:none;margin-top:2px}
+.case-purpose p{color:#647f89;line-height:1.75;font-size:12px;margin:0}
+.case-tabs{display:flex;gap:4px;border-bottom:1px solid #e2eaed;padding:0 9px;overflow-x:auto}
+.case-tabs button{flex:1;border:0;border-bottom:2px solid transparent;background:none;
+ color:#8fa5ac;padding:13px 9px;font-size:10.5px;font-weight:800;white-space:nowrap}
+.case-tabs button.active{border-bottom-color:#3b9289;color:#2c817c}
+.case-body{padding:20px;min-height:242px}
+.case-body ul{padding-left:20px;margin:13px 0 19px}
+.case-body li{font-size:12px;color:#67828d;line-height:1.7;margin-bottom:8px}
+.case-reflection{border:1px solid #deeaeb;border-radius:9px;background:#f7fbfa;margin-top:12px}
+.case-reflection>button{border:0;background:none;width:100%;display:flex;gap:10px;
+ align-items:center;text-align:left;color:#327d79;font-size:11px;font-weight:800;padding:13px}
+.case-reflection>p{margin:0;padding:0 13px 14px 39px;font-size:11.5px;line-height:1.7;color:#64858c}
+.case-footer{padding:14px;border-top:1px solid #e5eeee;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.case-footer>button{display:flex;align-items:center;gap:8px;border:0;border-radius:8px;
+ padding:12px 14px;background:#32877d;color:#fff;font-size:11px;font-weight:800}
+.case-sources{display:flex;flex-direction:column;gap:6px;align-items:start}
+.case-sources a{font-size:10px;color:#4d8889;text-decoration:underline}
+.explorer-anchor{height:1px;scroll-margin-top:85px}
+.anatomy-support-heading{margin-top:17px;padding:25px 0 11px;border-top:1px solid #d5e4e8;
+ display:flex;align-items:center;justify-content:space-between;gap:17px}
+.anatomy-support-heading h2{font:800 21px/1.3 Manrope,sans-serif;margin:9px 0;color:#355968}
+.anatomy-support-heading p{color:#728d95;line-height:1.6;font-size:11.5px;max-width:780px;margin:0}
+.anatomy-support-heading button{display:flex;align-items:center;gap:8px;
+ border:1px solid #d4e5e8;background:#fff;color:#3c827e;border-radius:8px;
+ padding:11px 13px;white-space:nowrap;font-size:11px;font-weight:800}
+@media(max-width:900px){
+ #clinica .clinical-workspace{grid-template-columns:minmax(170px,.8fr) minmax(0,1.4fr)}
+ .case-workspace{grid-template-columns:minmax(160px,.7fr) minmax(0,1.45fr)}
+ .case-lab{padding:17px}
+}
+@media(max-width:760px){
+ #clinica .clinical-workspace,.case-workspace{grid-template-columns:1fr}
+ #clinica .clinical-index{max-height:195px}
+ .case-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .case-select button{min-height:94px}
+ .anatomy-support-heading{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:540px){
+ .neuro-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hero-pathways{display:grid;grid-template-columns:1fr 1fr}
+ .hero-pathways button{font-size:10px;padding:11px 7px}
+ .hero-pathways .hero-pathway-primary{grid-column:1/-1}
+ #clinica .panel-heading h2,.case-lab .panel-heading h2{font-size:18px}
+ #clinica .clinical-record-tabs button{font-size:10px}
+ .case-lab{padding:12px}
+ .case-select button{padding:10px;min-height:98px}
+ .case-select button>strong{font-size:10.5px}
+ .case-select button>small{font-size:9px}
+ .case-paper-top{padding:14px}.case-paper-top h3{font-size:18px}
+ .case-purpose,.case-body{padding:13px}
+ .case-tabs button{font-size:9.5px;padding:12px 6px}
+ .case-body li{font-size:11.5px}
+ .case-footer>button{min-height:44px}
+ .anatomy-support-heading h2{font-size:19px}
+}
