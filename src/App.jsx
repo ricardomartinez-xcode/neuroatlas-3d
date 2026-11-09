@@ -35,7 +35,10 @@ function Pill({children,selected,onClick,title}){
 }
 function App(){
  const [regions,setRegions]=useState([]);
- const [atlasMode,setAtlasMode]=useState('cortex');
+ const [atlasMode,setAtlasMode]=useState(()=>{
+  const query=new URLSearchParams(window.location.search).get('vista');
+  return query==='internas'?'deep':query==='rm'?'mri':'cortex';
+ });
  const [selectedDeep,setSelectedDeep]=useState('thalamus-left');
  const [hasCorticalSelection,setHasCorticalSelection]=useState(false);
  const [error,setError]=useState('');
@@ -135,7 +138,13 @@ function App(){
    return()=>document.removeEventListener('fullscreenchange',onChange);
  },[]);
  const jump=id=>{setNavOpen(false);document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});};
- const changeMode=mode=>{setAtlasMode(mode);setNavOpen(false);if(mode!=='cortex')setExam(false);document.getElementById('explorar')?.scrollIntoView({behavior:'smooth',block:'start'});};
+ const changeMode=mode=>{
+  setAtlasMode(mode);setNavOpen(false);if(mode!=='cortex')setExam(false);
+  const url=new URL(window.location.href);
+  if(mode==='cortex')url.searchParams.delete('vista');else url.searchParams.set('vista',mode==='deep'?'internas':'rm');
+  window.history.replaceState({},'',url);
+  document.getElementById('explorar')?.scrollIntoView({behavior:'smooth',block:'start'});
+ };
  return <div className="app">
    <aside className={'rail'+(navOpen?' rail-open':'')}>
      <div className="brand"><div className="brand-icon"><Brain size={23}/></div><div><strong>NEURO<span>ATLAS</span></strong><small>LABORATORIO 3D</small></div></div>
