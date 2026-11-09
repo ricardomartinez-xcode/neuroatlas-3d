@@ -138,9 +138,9 @@ export default function AtlasViewer({
   hemi,mode,display,selected,onSelect,onHover,regionMap,focusIds,quiz,orientation,reset,rotate,opacity,onLoading,onError,canvasRef
 }){
   const onLoad=useCallback(()=>onLoading(false),[onLoading]);
-  return <Canvas dpr={[1,Math.min(window.devicePixelRatio||1,2)]}
+  return <Canvas frameloop={rotate?'always':'demand'} dpr={[1,Math.min(window.devicePixelRatio||1,1.5)]}
     camera={{position:[2.9,1.6,4.2],fov:42,near:.04,far:100}}
-    gl={{alpha:true,antialias:true,preserveDrawingBuffer:true}}
+    gl={{alpha:true,antialias:true,preserveDrawingBuffer:true,powerPreference:'low-power'}}
     onCreated={({gl})=>{canvasRef.current=gl.domElement;}}
     fallback={<div className="canvas-fallback">Este navegador no permite visualización WebGL.</div>}>
     <ambientLight intensity={1.75}/>

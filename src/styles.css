@@ -8,3 +8,27 @@
 @media(max-width:540px){.topbar{padding:0 13px}.top-path{font-size:10px;gap:7px}.top-path>span{display:none}.top-path>svg{display:none}.top-actions{gap:8px}.source-status{display:none}.content{padding:23px 13px}.page-header h1{letter-spacing:-1.1px;font-size:25px}.page-header>p{font-size:11px}.source-metrics{margin:22px 0 27px;justify-content:space-between;gap:6px}.source-metrics div{flex-direction:column;align-items:start;gap:4px}.source-metrics i{display:none}.source-metrics strong{font-size:11px}.source-metrics span{font-size:8px}.explorer-top{align-items:start}.explorer-top h2,.panel-heading h2{font-size:17px}.atlas-actions>span{display:none}.atlas-actions button{padding:10px 11px;font-size:10px}.stage-toolbar{padding:10px;gap:9px}.control-group{flex-direction:column;align-items:start}.control-label{font-size:8px}.seg-pill{font-size:9px;padding:8px 7px}.canvas-shell{height:420px}.canvas-badge{left:12px;top:14px;font-size:8px}.compass{right:10px;top:14px}.hover-label{top:49px;left:12px;max-width:90%}.canvas-grid-mark{bottom:72px;right:12px;font-size:7px}.canvas-bottom{padding:12px}.drag-hint{font-size:9px}.drag-hint svg{display:none}.drag-hint{max-width:130px;line-height:1.4}.stage-settings{padding:11px}.setting-line{flex-wrap:wrap;gap:7px}.setting-line>span,.setting-line>label{width:100%;flex-basis:100%}.orientation-row{gap:3px}.orientation-row button{padding:6px;font-size:9px}.network-card,.quiz-card,.regions-section,.references{padding:17px}.count-label{font-size:9px;padding:7px}.index-toolbar{flex-direction:column}.index-search,.filter-wrap{width:100%;height:41px;flex:none}.region-row{gap:7px;padding:9px}.region-id{width:22px}.region-text strong{font-size:10px}.region-row>button{width:26px;height:26px}.site-footer{flex-direction:column;align-items:flex-start}.viewer-workspace:fullscreen{padding:6px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 
+
+/* Usabilidad táctil y carga GPU moderada en pantallas estrechas */
+@media(max-width:920px){
+  .viewer-workspace{grid-template-columns:minmax(0,1fr)}
+  .inspector{min-height:0}
+  .canvas-shell{height:min(58vw,480px);min-height:390px}
+  .control-group{flex-direction:row;align-items:center}
+}
+@media(max-width:540px){
+  .canvas-shell{height:430px;min-height:430px}
+  .top-path{min-width:0}.top-path strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .control-group{flex-direction:column;align-items:flex-start}
+  .seg-pill{min-height:38px;padding:9px 10px;font-size:10.5px}
+  .orientation-row button,.domain-option{min-height:36px;padding:8px 11px;font-size:10.5px}
+  .canvas-tools button{width:39px;height:39px}
+  .region-row>button{width:37px;height:37px;font-size:11px}
+  .rail-link{min-height:46px}
+  .canvas-badge{font-size:8.5px}
+}
+@media(pointer:coarse){
+  .orientation-row button,.seg-pill,.domain-option,.region-row>button{min-height:40px}
+  .canvas-tools button{min-width:40px;min-height:40px}
+  .index-search,.filter-wrap{min-height:45px}
+}

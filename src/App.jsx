@@ -103,7 +103,7 @@ function App(){
    viewerShell.current?.scrollIntoView({behavior:'smooth',block:'center'});
  };
  const toggleExam=()=>{
-   if(!exam){setQuestion(makeQuestion(null));setAnswered(null);setAttempts(0);setCorrect(0);setHemi('both');setDisplay('lobes');setOrientation('oblique');setReset(n=>n+1);}
+   if(!exam){setSelected({hemi:'left',id:0});setQuestion(makeQuestion(null));setAnswered(null);setAttempts(0);setCorrect(0);setHemi('both');setDisplay('lobes');setOrientation('oblique');setReset(n=>n+1);}
    else{setAnswered(null);setDisplay('anatomy');}
    setExam(v=>!v);
  };
