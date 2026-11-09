@@ -127,7 +127,7 @@ function CameraRig({hemi,orientation,mode,reset}){
    const horizontal=hemi==='both';
    const targetX=horizontal?0:side*.54;
    // Fit for the narrow viewport without hiding either hemisphere; closer on desktop.
-   const base=horizontal?(aspect<.9?4.8:3.7):(aspect<.9?3.45:3.2);
+   const base=horizontal?(aspect<.9?5.1:4.05):(aspect<.9?3.85:3.5);
    const dist=base*(mode==='infl'?1.25:1);
    const directions={
      oblique:[.65,.38,.78],lateral:[side,.12,.18],medial:[-side,.1,.16],

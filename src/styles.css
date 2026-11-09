@@ -166,3 +166,9 @@
  .deep-opacity{flex-wrap:wrap}
  .deep-opacity span{flex:1 1 100%}
 }
+
+.deep-mri-slice{padding:11px 15px;display:flex;align-items:center;gap:12px;background:#ecf4f4;border-bottom:1px solid #dce9e9}
+.deep-mri-slice label{font-size:9px;font-weight:800;color:#659195;letter-spacing:.6px}
+.deep-mri-slice input{flex:1;accent-color:#398d89;min-width:75px}
+.deep-mri-slice strong{font-size:10px;color:#4f7881;white-space:nowrap}
+@media(max-width:540px){.deep-mri-slice{flex-wrap:wrap;gap:7px}.deep-mri-slice label{flex-basis:100%}.deep-mri-slice input{width:60%;flex:auto}}

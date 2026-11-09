@@ -121,3 +121,6 @@ La acción manual `Prepare NeuroAtlas MNI anatomical assets` de GitHub Actions t
 La malla fsaverage6 está disponible en https://osf.io/jzxyr/ (vía Nilearn, suma SHA-256 documentada en `public/atlas/fs6-meta.json`). Para reproducir los datos se incorporan `scripts/build_fs6.py` y `scripts/build_context.py` al flujo `Prepare NeuroAtlas MNI anatomical assets` de GitHub Actions.
 
 **Limitaciones**: la resolución de las segmentaciones volumétricas no equivale a precisión histológica; límites de etiquetas fsaverage6 son interpolados y requieren precaución clínica; no se ha validado para uso diagnóstico. Los modelos profundos se basan en isosuperficies del atlas aseg y pueden carecer de pequeños detalles anatómicos.
+
+### Correlación de la estructura profunda con una RM real de referencia
+La vista de anatomía profunda permite mostrar un plano sagital T1 real de la misma plantilla MNI152 sobre el modelo 3D de la estructura seleccionada. El plano recorre el eje RAS de izquierda a derecha y puede desplazarse manualmente; se contrasta con la estructura sin deformarla. De manera alternativa es posible ocultar el corte, mostrar una silueta cortical derivada de aseg o ampliar la pieza uniformemente. La opción de corte T1 es **una imagen de plantilla promedio**, no neuroimagen individual de pacientes.

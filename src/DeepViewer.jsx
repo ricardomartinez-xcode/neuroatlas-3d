@@ -2,12 +2,22 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {Canvas,useThree} from '@react-three/fiber';
 import {OrbitControls} from '@react-three/drei';
 import * as THREE from 'three';
-import {RotateCcw,Play,Pause,Layers3,MousePointer2,Info,Eye,EyeOff,Focus} from 'lucide-react';
+import {RotateCcw,Play,Pause,Layers3,MousePointer2,Info,Eye,EyeOff,Focus,ScanEye} from 'lucide-react';
 
 // Source: TemplateFlow MNI152NLin2009cAsym aseg labels, in the same MNI RAS
 // reference frame as the supporting cortical context and MRI planes.
 const BASE=import.meta.env.BASE_URL+'volume/';
 const CACHE=new Map();
+let T1_VOLUME_PROMISE=null;
+function loadT1Volume(){
+ if(!T1_VOLUME_PROMISE){
+  T1_VOLUME_PROMISE=fetch(BASE+'mni152_t1.bin').then(r=>{
+   if(!r.ok)throw Error('No se encontró la resonancia T1');
+   return r.arrayBuffer();
+  }).catch(e=>{T1_VOLUME_PROMISE=null;throw e});
+ }
+ return T1_VOLUME_PROMISE;
+}
 export function parseVolumeMesh(buffer){
  const v=new DataView(buffer);
  if(String.fromCharCode(...new Uint8Array(buffer,0,4))!=='NAVM')throw Error('Formato 3D inválido');
@@ -66,12 +76,48 @@ function CorticalContext({file,hemi}){
       depthWrite={false} metalness={0}/>
  </mesh>;
 }
-function Rig({reset,isolated}){
+// This mid-sagittal MRI plane and the labelled 3D nuclei share the SAME MNI affine.
+function MriSagittalPlane({slice}){
+ const [texture,setTexture]=useState(null);
+ useEffect(()=>{
+  let live=true;let tex=null;
+  loadT1Volume().then(buffer=>{
+   if(!live)return;
+   const header=new DataView(buffer);
+   if(String.fromCharCode(...new Uint8Array(buffer,0,4))!=='NAVL')throw Error('Imagen T1 inválida');
+   const nx=header.getUint16(4,true),ny=header.getUint16(6,true),nz=header.getUint16(8,true);
+   if(nx!==97||ny!==115||nz!==97)throw Error('Dimensiones MNI incorrectas');
+   const voxels=new Uint8Array(buffer.slice(10));
+   const rgba=new Uint8Array(ny*nz*4);
+   for(let z=0;z<nz;z++)for(let y=0;y<ny;y++){
+     const gray=voxels[slice+nx*(y+ny*z)],off=(y+ny*z)*4;
+     rgba[off]=gray;rgba[off+1]=gray;rgba[off+2]=gray;rgba[off+3]=255;
+   }
+   tex=new THREE.DataTexture(rgba,ny,nz,THREE.RGBAFormat,THREE.UnsignedByteType);
+   tex.colorSpace=THREE.SRGBColorSpace;
+   tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;tex.flipY=false;
+   tex.needsUpdate=true;
+   setTexture(tex);
+  }).catch(console.error);
+  return()=>{live=false;tex?.dispose()};
+ },[slice]);
+ if(!texture)return null;
+ // MNI affine at 2mm: R = 2*i-96.5, A=2*j-132.5, S=2*k-78.5.
+ // NeuroAtlas scene mapping x=R/72, y=(S-18)/72, z=(A+18)/72.
+ const x=(slice*2-96.5)/72;
+ return <mesh rotation={[0,-Math.PI/2,0]} position={[x,-.0069444,-.0069444]} renderOrder={5}>
+   <planeGeometry args={[228/72,192/72]}/>
+   <meshBasicMaterial map={texture} side={THREE.DoubleSide} transparent
+      opacity={.95} depthWrite={false} toneMapped={false}/>
+ </mesh>;
+}
+
+function Rig({reset,isolated,hemisphere}){
  const {camera,controls,size,invalidate}=useThree();
  useEffect(()=>{
   const aspect=size.width/Math.max(1,size.height);
   const dist=isolated?2.65:(aspect<.9?4.1:3.45);
-  camera.position.set(dist*.73,dist*.42,dist*.72);
+  camera.position.set((hemisphere==='right'?1:-1)*dist*.72,dist*.35,dist*.84);
   camera.lookAt(0,0,0);
   if(controls){controls.target.set(0,0,0);controls.update();}
   camera.updateProjectionMatrix();invalidate();
@@ -82,7 +128,9 @@ export function DeepViewer({selected,onSelect}){
  const [manifest,setManifest]=useState(null),[error,setError]=useState('');
  const [focus,setFocus]=useState('talamo');
  const [isolated,setIsolated]=useState(false);
- const [showContext,setShowContext]=useState(true);
+ const [showContext,setShowContext]=useState(false);
+ const [showMRI,setShowMRI]=useState(true);
+ const [mriSlice,setMriSlice]=useState(48);
  const [spin,setSpin]=useState(false);
  const [opacity,setOpacity]=useState(100);
  const [reset,setReset]=useState(0);
@@ -98,6 +146,7 @@ export function DeepViewer({selected,onSelect}){
  useEffect(()=>{if(groups.length&&focus!=='all'&&selected){const r=groups.find(x=>x.id===selected);if(r&&r.category!==focus)setFocus(r.category);}},[groups,selected]);
  const types=useMemo(()=>Array.from(new Set(groups.map(x=>x.category))),[groups]);
  const chosen=groups.find(s=>s.id===selected)||groups.find(s=>s.category===focus)||groups[0];
+ const chosenHemi=chosen?.id.endsWith('-right')?'right':'left';
  const visible=isolated?groups.filter(s=>s.id===chosen?.id):groups.filter(s=>focus==='all'||s.category===focus);
  const changeGroup=cat=>{
   setFocus(cat);setIsolated(false);
@@ -123,7 +172,8 @@ export function DeepViewer({selected,onSelect}){
     </select></label>
     <div className="deep-controls">
      <button onClick={()=>{setIsolated(x=>!x);setReset(n=>n+1)}} aria-pressed={isolated} title={isolated?'Volver a posición real':'Ampliar estructura para inspeccionarla'}><Focus size={16}/>{isolated?'En posición':'Examinar aislada'}</button>
-     <button onClick={()=>setShowContext(x=>!x)} aria-pressed={showContext} title="Mostrar u ocultar la silueta cortical MNI" disabled={isolated}>{showContext?<Eye size={16}/>:<EyeOff size={16}/>} Corteza</button>
+     <button onClick={()=>{setShowMRI(x=>!x);setShowContext(false)}} aria-pressed={showMRI} title="Mostrar u ocultar corte real de resonancia T1" disabled={isolated}><ScanEye size={16}/> RM T1</button>
+     <button onClick={()=>{setShowContext(x=>!x);setShowMRI(false)}} aria-pressed={showContext} title="Mostrar u ocultar la silueta cortical MNI" disabled={isolated}>{showContext?<Eye size={16}/>:<EyeOff size={16}/>} Silueta</button>
      <button onClick={()=>setSpin(x=>!x)} aria-pressed={spin} title="Rotación automática">{spin?<Pause size={16}/>:<Play size={16}/>}</button>
      <button onClick={()=>setReset(n=>n+1)} title="Restablecer encuadre"><RotateCcw size={16}/></button>
     </div></div>
@@ -136,14 +186,20 @@ export function DeepViewer({selected,onSelect}){
        <directionalLight position={[-3,1,-4]} intensity={.42} color="#b3d6e6"/>
        {showContext&&!isolated&&(manifest?.contextSurfaces||[]).map(s=>
          <CorticalContext key={s.file} file={s.file} hemi={s.hemisphere}/>)}
+       {showMRI&&!isolated&&<MriSagittalPlane slice={mriSlice}/>}
        {visible.map(s=><Structure key={s.id} region={s} chosen={s.id===chosen?.id}
            isolated={isolated} groupOpacity={(opacity/100)*(focus==='all' ? .4 : .85)} onSelect={changeSelection}/>)}
        <OrbitControls makeDefault enableDamping dampingFactor={.09} enablePan
          minDistance={1.05} maxDistance={10} autoRotate={spin} autoRotateSpeed={.6}/>
-       <Rig reset={reset} isolated={isolated}/>
+       <Rig reset={reset} isolated={isolated} hemisphere={chosenHemi}/>
      </Canvas>:<div className="deep-loading" role="status">Cargando anatomía de referencia…</div>}
-     <div className="deep-canvas-caption"><MousePointer2 size={15}/> {isolated?'Pieza ampliada uniformemente (escala de visualización)':'Contexto cerebral y estructuras en coordenadas MNI'}</div>
+     <div className="deep-canvas-caption"><MousePointer2 size={15}/> {isolated?'Pieza ampliada uniformemente (escala de visualización)':showMRI?'Corte T1 y estructura 3D en el mismo espacio MNI':'Estructuras anatómicas en sus coordenadas MNI'}</div>
     </div>
+    {showMRI&&!isolated&&<div className="deep-mri-slice">
+      <label htmlFor="deep-mri-index">POSICIÓN DEL CORTE SAGITAL</label>
+      <input id="deep-mri-index" type="range" min="20" max="77" step="1" value={mriSlice} onChange={e=>setMriSlice(+e.target.value)}/>
+      <strong>{(mriSlice*2-96.5).toFixed(1)} mm RAS</strong>
+    </div>}
     <div className="deep-opacity"><span>Opacidad de las estructuras secundarias</span><input aria-label="Opacidad de estructuras" type="range" min="40" max="100" value={opacity} onChange={e=>setOpacity(+e.target.value)}/><strong>{opacity}%</strong></div>
    </div>
    <aside className="deep-detail">
@@ -154,7 +210,7 @@ export function DeepViewer({selected,onSelect}){
      <div className="deep-value-row"><span>Etiquetas aseg</span><strong>{chosen.labels.join(', ')}</strong></div>
      <div className="deep-value-row"><span>Vértices originales de superficie derivada</span><strong>{chosen.vertices.toLocaleString('es-MX')}</strong></div>
      <div className="deep-value-row"><span>Resolución de datos de segmentación</span><strong>1 mm</strong></div>
-     <div className="deep-neutral-note"><Info size={15}/><span>La silueta gris corresponde a la corteza en el mismo espacio MNI. Su forma es una aproximación extraída del volumen; no una superficie pial individual. La ampliación aislada preserva la forma, pero no la escala respecto al cerebro.</span></div>
+     <div className="deep-neutral-note"><Info size={15}/><span>El corte T1 proviene de la plantilla MNI y comparte espacio con los núcleos. Puedes desplazarlo para comprobar su posición. La silueta alternativa procede de máscaras de tejido, no de una pial individual. La vista aislada preserva proporciones internas, pero no la escala respecto al cerebro.</span></div>
     </>:<p>Selecciona una estructura.</p>}
     {error&&<div className="error-banner" role="alert">{error}</div>}
     <div className="deep-source-note">MNI152NLin2009cAsym · FreeSurfer aseg · isosuperficies</div>
@@ -164,7 +220,7 @@ export function DeepViewer({selected,onSelect}){
    {groups.map(s=><button key={s.id} className={chosen?.id===s.id?'active':''}
        onClick={()=>changeSelection(s.id)}><span style={{background:s.color}}/>{s.name}</button>)}
   </div>
-  <div className="method-alert"><Info size={16}/> Las estructuras profundas y el contexto cortical comparten la misma plantilla MNI152. El atlas de superficie fsaverage6 se consulta por separado; no está registrado espacialmente con este volumen.</div>
+  <div className="method-alert"><Info size={16}/> Las estructuras profundas, el corte T1 y la silueta cortical comparten la misma plantilla MNI152. El atlas de superficie fsaverage6 se consulta por separado; no está registrado espacialmente con este volumen.</div>
  </section>;
 }
 
